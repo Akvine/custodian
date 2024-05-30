@@ -60,6 +60,7 @@ public class PropertyService {
         logger.debug("List properties by = {}", propertyList);
 
         String appTitle = propertyList.getAppTitle();
+        appService.verifyExistsByTitle(appTitle);
         List<PropertyBean> properties;
         if (CollectionUtils.isEmpty(propertyList.getProfiles()) &&
                 CollectionUtils.isEmpty(propertyList.getProfilesAndKeys())) {
