@@ -11,9 +11,15 @@
 	<groupId>ru.akvine</groupId>
 	<artifactId>custodian</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>custodian</name>
+    <packaging>pom</packaging>
+    <name>custodian</name>
 	<description>An application for managing properties</description>
-	<properties>
+    <modules>
+        <module>custodian-integration</module>
+		<module>custodian-core</module>
+		<module>custodian-admin</module>
+	</modules>
+    <properties>
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
