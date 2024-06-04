@@ -34,4 +34,7 @@ public class ClientEntity extends SoftBaseEntity {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "HASH", nullable = false)
+    private String hash;
 }

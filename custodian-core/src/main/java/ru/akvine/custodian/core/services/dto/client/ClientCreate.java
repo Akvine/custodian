@@ -9,6 +9,8 @@ import lombok.experimental.Accessors;
 public class ClientCreate {
     @ToString.Exclude
     private String email;
+    @ToString.Exclude
+    private String password;
     private String firstName;
     private String lastName;
     private int age;

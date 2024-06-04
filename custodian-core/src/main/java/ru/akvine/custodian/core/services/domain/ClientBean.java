@@ -1,7 +1,9 @@
 package ru.akvine.custodian.core.services.domain;
 
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Nullable;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
 import ru.akvine.custodian.core.services.domain.base.SoftBean;
 
@@ -14,6 +16,13 @@ public class ClientBean extends SoftBean {
     private String firstName;
     private String lastName;
     private int age;
+
+    @Nullable
+    @ToString.Exclude
+    private String password;
+    @Nullable
+    @ToString.Exclude
+    private String hash;
 
     public ClientBean(ClientEntity client) {
         this.id = client.getId();
