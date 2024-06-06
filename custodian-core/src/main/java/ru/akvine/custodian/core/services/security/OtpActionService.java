@@ -78,7 +78,7 @@ public abstract class OtpActionService<T extends OneTimePasswordable> {
         T action = getRepository().findCurrentAction(payload);
         if (action == null) {
             logger.info("User tried to finish {}, but it is not initiated", getActionName());
-            throw new ActionNotStartedException("Start registration action not started!");
+            throw new ActionNotStartedException("Action not started!");
         }
 
         verifySession(action, sessionId);

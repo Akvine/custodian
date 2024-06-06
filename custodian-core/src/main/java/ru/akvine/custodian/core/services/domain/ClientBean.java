@@ -31,6 +31,7 @@ public class ClientBean extends SoftBean {
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.age = client.getAge();
+        this.hash = client.getHash();
 
         this.createdDate = client.getCreatedDate();
         this.updatedDate = client.getUpdatedDate();

@@ -10,6 +10,7 @@ import ru.akvine.custodian.core.repositories.ClientRepository;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.client.ClientCreate;
+import ru.akvine.custodian.core.services.security.PasswordService;
 
 import java.time.ZonedDateTime;
 
@@ -18,17 +19,20 @@ import java.time.ZonedDateTime;
 @Slf4j
 public class ClientService {
     private final ClientRepository clientRepository;
+    private final PasswordService passwordService;
 
     public ClientBean create(ClientCreate clientCreate) {
         Preconditions.checkNotNull(clientCreate, "clientCreate is null");
         logger.debug("Create client by = {}", clientCreate);
 
+        String passwordHash = passwordService.encodePassword(clientCreate.getPassword());
         ClientEntity clientEntity = new ClientEntity()
                 .setUuid(UUIDGenerator.uuidWithNoDashes())
                 .setFirstName(clientCreate.getFirstName())
                 .setLastName(clientCreate.getLastName())
                 .setEmail(clientCreate.getEmail())
-                .setAge(clientCreate.getAge());
+                .setAge(clientCreate.getAge())
+                .setHash(passwordHash);
 
         ClientBean clientBean = new ClientBean(clientRepository.save(clientEntity));
         logger.debug("Successful save client = {}", clientBean);
