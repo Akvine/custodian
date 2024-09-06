@@ -11,12 +11,12 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.Ac
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreFinishRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreStartRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.security.AccessRestoreControllerMeta;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.security.AccessRestoreValidator;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
 import ru.akvine.custodian.core.services.security.AccessRestoreActionService;
-import ru.akvine.custodian.admin.controllers.rest.utils.SecurityUtils;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class AccessRestoreController implements AccessRestoreControllerMeta {
     private final AccessRestoreActionService accessRestoreActionService;
     private final AccessRestoreValidator accessRestoreValidator;
     private final AccessRestoreConverter accessRestoreConverter;
+    private final SecurityHelper securityHelper;
 
     @Override
     public Response start(@Valid AccessRestoreStartRequest request, HttpServletRequest httpServletRequest) {
@@ -54,7 +55,7 @@ public class AccessRestoreController implements AccessRestoreControllerMeta {
         accessRestoreValidator.verifyAccessRestoreFinish(request);
         AccessRestoreActionRequest actionRequest = accessRestoreConverter.convertToAccessRestoreActionRequest(request, httpServletRequest);
         ClientBean clientBean = accessRestoreActionService.finishAccessRestore(actionRequest);
-        SecurityUtils.authenticate(clientBean);
+        securityHelper.authenticate(clientBean, httpServletRequest);
         return new SuccessfulResponse();
     }
 }

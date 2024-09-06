@@ -12,7 +12,9 @@ import ru.akvine.custodian.core.repositories.entities.ClientEntity;
 import ru.akvine.custodian.core.services.domain.AppBean;
 import ru.akvine.custodian.core.services.dto.app.AppCreate;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,10 +45,35 @@ public class AppService {
         return savedApp;
     }
 
+    public List<AppBean> list(long clientId) {
+        return listEntities(clientId)
+                .stream()
+                .map(AppBean::new)
+                .toList();
+    }
+
+    public List<AppEntity> listEntities(long clientId) {
+        logger.debug("List apps for client with id = {}", clientId);
+        return appRepository.findByClientId(clientId);
+    }
+
+    @Deprecated
     public AppEntity verifyExistsByTitle(String title) {
         Preconditions.checkNotNull(title, "title is null");
         return appRepository
                 .findByTitle(title)
                 .orElseThrow(() -> new AppNotFoundException("App with title = [" + title + "] not found!"));
+    }
+
+    public AppEntity verifyExistsByTitle(String title, long clientId) {
+        Preconditions.checkNotNull(title, "title is null");
+        return appRepository
+                .findByTitleAndClientId(title, clientId)
+                .orElseThrow(() -> {
+                    String errorMessage = String.format(
+                            "App with title = {%s} for client id = {%d} not found",
+                            title, clientId);
+                    return new AppNotFoundException(errorMessage);
+                });
     }
 }

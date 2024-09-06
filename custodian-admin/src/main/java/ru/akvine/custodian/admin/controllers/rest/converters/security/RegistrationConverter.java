@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.OtpActionResponse;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.registration.*;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionRequest;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionResult;
-import ru.akvine.custodian.admin.controllers.rest.utils.SecurityUtils;
 
 @Component
 @RequiredArgsConstructor
 public class RegistrationConverter {
     @Value("${security.otp.new.delay.seconds}")
     private long otpNewDelaySeconds;
+
+    private final SecurityHelper securityHelper;
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationStartRequest request,
                                                                         HttpServletRequest httpServletRequest) {
@@ -33,7 +35,7 @@ public class RegistrationConverter {
 
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setOtp(request.getOtp());
     }
 
@@ -41,9 +43,9 @@ public class RegistrationConverter {
                                                                         HttpServletRequest httpServletRequest) {
         Preconditions.checkNotNull(request, "registrationNewOtpRequest is null");
         Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
-        return new RegistrationActionRequest()
-                .setEmail(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId());
+        return new RegistrationActionRequest();
+//                .setEmail(request.getEmail())
+//                .setSessionId(securityHelper.getSession(httpServletRequest).getId());
     }
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationFinishRequest request,
@@ -53,7 +55,7 @@ public class RegistrationConverter {
 
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId())
+//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setPassword(request.getPassword())
                 .setFirstName(request.getFirstName())
                 .setLastName(request.getLastName());

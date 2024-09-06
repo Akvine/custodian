@@ -10,9 +10,9 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.Ac
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreFinishRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreResponse;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreStartRequest;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
-import ru.akvine.custodian.admin.controllers.rest.utils.SecurityUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -20,6 +20,8 @@ public class AccessRestoreConverter {
 
     @Value("${security.otp.new.delay.seconds}")
     private long otpNewDelaySeconds;
+
+    private final SecurityHelper securityHelper;
 
     public AccessRestoreActionRequest convertToAccessRestoreActionRequest(AccessRestoreStartRequest request,
                                                                           HttpServletRequest httpServletRequest) {
@@ -37,7 +39,7 @@ public class AccessRestoreConverter {
 
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId())
+//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setOtp(request.getOtp());
     }
 
@@ -47,7 +49,7 @@ public class AccessRestoreConverter {
         Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId())
+//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setPassword(request.getPassword());
     }
 

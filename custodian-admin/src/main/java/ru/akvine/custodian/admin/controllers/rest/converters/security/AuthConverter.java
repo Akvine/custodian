@@ -10,15 +10,17 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.OtpActionResponse
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthCredentialsRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthFinishRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthResponse;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
-import ru.akvine.custodian.admin.controllers.rest.utils.SecurityUtils;
 
 @Component
 @RequiredArgsConstructor
 public class AuthConverter {
     @Value("${security.otp.new.delay.seconds}")
     private int otpNewDelaySeconds;
+
+    private final SecurityHelper securityHelper;
 
     public AuthActionRequest convertToAuthActionRequest(AuthCredentialsRequest request, HttpServletRequest httpServletRequest) {
         Preconditions.checkNotNull(request, "authCredentialsRequest is null");
@@ -35,7 +37,7 @@ public class AuthConverter {
 
         return new AuthActionRequest()
                 .setEmail(request.getEmail())
-                .setSessionId(SecurityUtils.getSession(httpServletRequest).getId())
+//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setOtp(request.getOtp());
     }
 

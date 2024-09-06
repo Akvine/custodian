@@ -18,6 +18,8 @@ public final class CommonErrorCodes {
     public static final String PROPERTY_NOT_FOUND_ERROR = "property.notFound.error";
 
     public interface Validation {
+        String DATE_INVALID_ERROR = "date.invalid.error";
+
         String AGE_INVALID_ERROR = "age.invalid.error";
 
         String EMAIL_BLANK_ERROR = "email.blank.error";

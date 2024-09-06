@@ -12,12 +12,12 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthCredenti
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthFinishRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthNewOtpRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.security.AuthControllerMeta;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.security.AuthValidator;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
 import ru.akvine.custodian.core.services.security.AuthActionService;
-import ru.akvine.custodian.admin.controllers.rest.utils.SecurityUtils;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +25,7 @@ public class AuthController implements AuthControllerMeta {
     private final AuthConverter authConverter;
     private final AuthValidator authValidator;
     private final AuthActionService authActionService;
+    private final SecurityHelper securityHelper;
 
     @Override
     public Response start(@Valid AuthCredentialsRequest request, HttpServletRequest httpServletRequest) {
@@ -46,13 +47,13 @@ public class AuthController implements AuthControllerMeta {
         authValidator.verifyAuthLogin(request);
         AuthActionRequest authActionRequest = authConverter.convertToAuthActionRequest(request, httpServletRequest);
         ClientBean clientBean = authActionService.finishAuth(authActionRequest);
-        SecurityUtils.authenticate(clientBean);
+        securityHelper.authenticate(clientBean, httpServletRequest);
         return new SuccessfulResponse();
     }
 
     @Override
     public Response logout(HttpServletRequest httpServletRequest) {
-        SecurityUtils.doLogout(httpServletRequest);
+//        securityHelper.doLogout(httpServletRequest);
         return new SuccessfulResponse();
     }
 }
