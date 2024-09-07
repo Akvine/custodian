@@ -45,7 +45,9 @@ public class PropertyConverter {
 
     public PropertyListResponse convertToPropertyListResponse(List<PropertyBean> properties) {
         Preconditions.checkNotNull(properties, "properties is null");
-        return new PropertyListResponse().setProperties(properties.stream().map(this::buildPropertyDto).toList());
+        return new PropertyListResponse()
+                .setCount(properties.size())
+                .setProperties(properties.stream().map(this::buildPropertyDto).toList());
     }
 
     public PropertyImport convertToPropertyImport(MultipartFile file,

@@ -9,9 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AppCreateRequest {
     @NotBlank
-    private String clientUuid;
-
-    @NotBlank
     @Size(max = 100)
     private String title;
 

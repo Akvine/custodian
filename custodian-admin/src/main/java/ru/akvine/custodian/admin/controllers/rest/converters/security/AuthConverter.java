@@ -37,7 +37,7 @@ public class AuthConverter {
 
         return new AuthActionRequest()
                 .setEmail(request.getEmail())
-//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setOtp(request.getOtp());
     }
 

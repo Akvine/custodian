@@ -53,7 +53,7 @@ public class AuthController implements AuthControllerMeta {
 
     @Override
     public Response logout(HttpServletRequest httpServletRequest) {
-//        securityHelper.doLogout(httpServletRequest);
+        securityHelper.doLogout(httpServletRequest);
         return new SuccessfulResponse();
     }
 }

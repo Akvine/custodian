@@ -27,14 +27,16 @@ public class AppService {
         Preconditions.checkNotNull(appCreate, "appCreate is null");
         logger.debug("App create by = {}", appCreate);
 
+        ClientEntity client = clientService.verifyExistsByUuid(appCreate.getClientUuid());
+
         String title = appCreate.getTitle();
-        Optional<AppEntity> appEntityOptional = appRepository.findByTitle(title);
+        long clientId = client.getId();
+        Optional<AppEntity> appEntityOptional = appRepository.findByTitleAndClientId(title, clientId);
         if (appEntityOptional.isPresent()) {
             String errorMessage = String.format("App with title = [%s] already exists!", title);
             throw new PropertyAlreadyExistsException(errorMessage);
         }
 
-        ClientEntity client = clientService.verifyExistsByUuid(appCreate.getClientUuid());
         AppEntity app = new AppEntity()
                 .setClient(client)
                 .setTitle(appCreate.getTitle())

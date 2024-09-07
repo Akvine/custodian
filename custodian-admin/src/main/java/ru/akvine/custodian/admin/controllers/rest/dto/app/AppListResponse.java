@@ -1,4 +1,4 @@
-package ru.akvine.custodian.admin.controllers.rest.dto.property;
+package ru.akvine.custodian.admin.controllers.rest.dto.app;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class PropertyListResponse extends SuccessfulResponse {
+public class AppListResponse extends SuccessfulResponse {
     private int count;
 
     @NotNull
-    private List<@Valid PropertyDto> properties;
+    private List<@Valid AppDto> apps;
 }

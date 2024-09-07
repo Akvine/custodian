@@ -43,9 +43,9 @@ public class RegistrationConverter {
                                                                         HttpServletRequest httpServletRequest) {
         Preconditions.checkNotNull(request, "registrationNewOtpRequest is null");
         Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
-        return new RegistrationActionRequest();
-//                .setEmail(request.getEmail())
-//                .setSessionId(securityHelper.getSession(httpServletRequest).getId());
+        return new RegistrationActionRequest()
+                .setEmail(request.getEmail())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId());
     }
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationFinishRequest request,
@@ -55,7 +55,7 @@ public class RegistrationConverter {
 
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
-//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setPassword(request.getPassword())
                 .setFirstName(request.getFirstName())
                 .setLastName(request.getLastName());

@@ -130,7 +130,7 @@ public class RegistrationActionService extends OtpActionService<RegistrationActi
                     throw new RegistrationNotStartedException("Registration not started yet!");
                 }
 
-//                verifySession(registrationAction, request.getSessionId());
+                verifySession(registrationAction, request.getSessionId());
                 verifyState(ActionState.OTP_PASSED, registrationAction);
 
                 getRepository().delete(registrationAction);

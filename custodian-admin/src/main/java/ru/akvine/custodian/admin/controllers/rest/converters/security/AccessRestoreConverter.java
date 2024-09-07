@@ -39,7 +39,7 @@ public class AccessRestoreConverter {
 
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
-//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setOtp(request.getOtp());
     }
 
@@ -49,7 +49,7 @@ public class AccessRestoreConverter {
         Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
-//                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
+                .setSessionId(securityHelper.getSession(httpServletRequest).getId())
                 .setPassword(request.getPassword());
     }
 
