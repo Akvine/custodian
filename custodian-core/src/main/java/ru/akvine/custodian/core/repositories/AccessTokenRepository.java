@@ -17,4 +17,8 @@ public interface AccessTokenRepository extends JpaRepository<AccessTokenEntity, 
             "from AccessTokenEntity ate join app atep where atep.id in :ids and " +
             "atep.deleted = false and atep.deletedDate is null")
     List<AccessTokenProjection> findByAppIds(@Param("ids") List<Long> appIds);
+
+    @Query("from AccessTokenEntity ate where ate.token = :token")
+    Optional<AccessTokenEntity> findByToken(@Param("token") String token);
+
 }

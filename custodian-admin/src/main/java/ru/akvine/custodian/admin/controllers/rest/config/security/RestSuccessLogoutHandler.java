@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.SuccessfulResponse;
+import ru.akvine.common.SuccessfulResponse;
 
 import java.io.IOException;
 

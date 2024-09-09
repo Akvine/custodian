@@ -44,7 +44,9 @@ public class PropertyService {
             throw new PropertyAlreadyExistsException(errorMessage);
         }
 
-        AppEntity app = appService.verifyExistsByTitle(propertyCreate.getAppTitle());
+        AppEntity app = appService.verifyExistsByTitle(
+                propertyCreate.getAppTitle(),
+                propertyCreate.getClientId());
         PropertyEntity propertyEntity = new PropertyEntity()
                 .setProfile(profile)
                 .setKey(key)
@@ -60,7 +62,7 @@ public class PropertyService {
         logger.debug("List properties by = {}", propertyList);
 
         String appTitle = propertyList.getAppTitle();
-        appService.verifyExistsByTitle(appTitle);
+        appService.verifyExistsByTitle(appTitle, propertyList.getClientId());
         List<PropertyBean> properties;
         if (CollectionUtils.isEmpty(propertyList.getProfiles()) &&
                 CollectionUtils.isEmpty(propertyList.getProfilesAndKeys())) {
@@ -95,7 +97,7 @@ public class PropertyService {
         String profile = propertyImport.getProfile();
         logger.debug("Import properties for appTitle = {} with profile = {}", appTitle, profile);
 
-        AppEntity app = appService.verifyExistsByTitle(appTitle);
+        AppEntity app = appService.verifyExistsByTitle(appTitle, propertyImport.getClientId());
         propertyImport.getProperties().forEach((key, value) -> {
             PropertyEntity propertyEntity = new PropertyEntity()
                     .setApp(app)

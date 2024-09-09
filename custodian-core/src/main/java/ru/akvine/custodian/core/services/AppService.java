@@ -14,7 +14,6 @@ import ru.akvine.custodian.core.services.dto.app.AppCreate;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,22 +58,14 @@ public class AppService {
         return appRepository.findByClientId(clientId);
     }
 
-    @Deprecated
-    public AppEntity verifyExistsByTitle(String title) {
-        Preconditions.checkNotNull(title, "title is null");
-        return appRepository
-                .findByTitle(title)
-                .orElseThrow(() -> new AppNotFoundException("App with title = [" + title + "] not found!"));
-    }
-
     public AppEntity verifyExistsByTitle(String title, long clientId) {
         Preconditions.checkNotNull(title, "title is null");
         return appRepository
                 .findByTitleAndClientId(title, clientId)
                 .orElseThrow(() -> {
                     String errorMessage = String.format(
-                            "App with title = {%s} for client id = {%d} not found",
-                            title, clientId);
+                            "App with title = [%s] for current user not found",
+                            title);
                     return new AppNotFoundException(errorMessage);
                 });
     }

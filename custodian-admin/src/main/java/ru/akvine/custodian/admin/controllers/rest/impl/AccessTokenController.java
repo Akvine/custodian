@@ -5,9 +5,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.akvine.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.converters.AccessTokenConverter;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.Response;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.SuccessfulResponse;
 import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenGenerateRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.AccessTokenControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
@@ -37,8 +36,7 @@ public class AccessTokenController implements AccessTokenControllerMeta {
 
     @Override
     public Response list(HttpServletRequest request) {
-//        List<AccessTokenProjection> tokens = accessTokenService.list(securityHelper.getCurrentUser().getId());
-//        return accessTokenConverter.convertToTokenListResponse(tokens);
-        return new SuccessfulResponse();
+        List<AccessTokenProjection> tokens = accessTokenService.list(securityHelper.getCurrentUser().getId());
+        return accessTokenConverter.convertToTokenListResponse(tokens);
     }
 }

@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.akvine.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.converters.AppConverter;
 import ru.akvine.custodian.admin.controllers.rest.dto.app.AppCreateRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.meta.AppControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.AppService;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.Response;
+import ru.akvine.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthCredentialsRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthFinishRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthNewOtpRequest;

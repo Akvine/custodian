@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.ErrorResponse;
+import ru.akvine.common.ErrorResponse;
 import ru.akvine.custodian.core.exceptions.CommonErrorCodes;
 
 import java.io.IOException;

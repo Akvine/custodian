@@ -33,7 +33,9 @@ public class AccessTokenService {
         logger.debug("Generate new token for app with title = {} for client with id = {}",
                 tokenGenerate.getAppTitle(), tokenGenerate.getClientId());
 
-        AppEntity appEntity = appService.verifyExistsByTitle(tokenGenerate.getAppTitle());
+        AppEntity appEntity = appService.verifyExistsByTitle(
+                tokenGenerate.getAppTitle(),
+                tokenGenerate.getClientId());
         Optional<AccessTokenEntity> token = accessTokenRepository.findByAppId(appEntity.getId());
         ZonedDateTime expiredAt = tokenGenerate.getExpiredAt();
         if (expiredAt == null) {

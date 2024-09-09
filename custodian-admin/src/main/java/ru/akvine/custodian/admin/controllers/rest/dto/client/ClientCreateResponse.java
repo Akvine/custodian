@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.SuccessfulResponse;
+import ru.akvine.common.SuccessfulResponse;
 
 @Data
 @Accessors(chain = true)

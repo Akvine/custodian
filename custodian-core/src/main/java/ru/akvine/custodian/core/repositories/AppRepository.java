@@ -11,11 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface AppRepository extends JpaRepository<AppEntity, Long> {
-    @Deprecated
-    @Query("from AppEntity ae where ae.title = :title and " +
-            "ae.deleted = false and ae.deletedDate is null")
-    Optional<AppEntity> findByTitle(@Param("title") String title);
-
     @Query("from AppEntity ae where ae.title = :title and ae.client.id = :clientId and " +
             "ae.deleted = false and ae.deletedDate is null")
     Optional<AppEntity> findByTitleAndClientId(@Param("title") String title, @Param("clientId") long clientId);

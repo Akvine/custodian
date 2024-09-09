@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.ErrorResponse;
+import ru.akvine.common.ErrorResponse;
 import ru.akvine.custodian.core.exceptions.CommonErrorCodes;
 import ru.akvine.custodian.core.exceptions.app.AppAlreadyExistsException;
 import ru.akvine.custodian.core.exceptions.app.AppNotFoundException;

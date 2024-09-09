@@ -1,4 +1,4 @@
-package ru.akvine.custodian.admin.controllers.rest.dto.common;
+package ru.akvine.common;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

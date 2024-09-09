@@ -18,6 +18,7 @@
         <module>custodian-integration</module>
 		<module>custodian-core</module>
 		<module>custodian-admin</module>
+		<module>custodian-common</module>
 	</modules>
     <properties>
 		<java.version>21</java.version>

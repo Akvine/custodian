@@ -8,9 +8,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PropertyCreateRequest {
     @NotBlank
-    private String clientUuid;
-
-    @NotBlank
     private String appTitle;
 
     @NotBlank

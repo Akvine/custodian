@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.Response;
+import ru.akvine.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.registration.*;
 
 @RequestMapping("/registration")

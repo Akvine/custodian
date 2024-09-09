@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.*;
 import ru.akvine.custodian.admin.controllers.rest.parsers.FilePropertiesParser;
+import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
 import ru.akvine.custodian.core.services.dto.property.PropertyImport;
@@ -18,11 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PropertyConverter {
     private final FilePropertiesParser filePropertiesParser;
+    private final SecurityHelper securityHelper;
 
     public PropertyCreate convertToPropertyCreate(PropertyCreateRequest request) {
         Preconditions.checkNotNull(request, "propertyCreateRequest is null");
         return new PropertyCreate()
-                .setClientUuid(request.getClientUuid())
+                .setClientId(securityHelper.getCurrentUser().getId())
                 .setAppTitle(request.getAppTitle().trim().toLowerCase())
                 .setProfile(request.getProfile().trim().toLowerCase())
                 .setKey(request.getKey())
@@ -38,6 +40,7 @@ public class PropertyConverter {
     public PropertyList convertToPropertyList(PropertyListRequest request) {
         Preconditions.checkNotNull(request, "propertyListRequest is null");
         return new PropertyList()
+                .setClientId(securityHelper.getCurrentUser().getId())
                 .setAppTitle(request.getAppTitle())
                 .setProfilesAndKeys(request.getKeys())
                 .setProfiles(request.getProfiles());
@@ -57,6 +60,7 @@ public class PropertyConverter {
         Preconditions.checkNotNull(appTitle, "appTitle is null");
         Preconditions.checkNotNull(profile, "profile is null");
         return new PropertyImport()
+                .setClientId(securityHelper.getCurrentUser().getId())
                 .setProperties(filePropertiesParser.parse(file))
                 .setAppTitle(appTitle.trim().toLowerCase())
                 .setProfile(profile.trim().toLowerCase());

@@ -3,7 +3,7 @@ package ru.akvine.custodian.admin.controllers.rest.meta;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.akvine.custodian.admin.controllers.rest.dto.common.Response;
+import ru.akvine.common.Response;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyCreateRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyListRequest;
 

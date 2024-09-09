@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class PropertyList {
+    private long clientId;
     private String appTitle;
     @Nullable
     private Set<String> profiles;

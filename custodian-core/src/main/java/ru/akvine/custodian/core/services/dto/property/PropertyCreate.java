@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 @Data
 @Accessors(chain = true)
 public class PropertyCreate {
-    private String clientUuid;
+    private long clientId;
     private String appTitle;
     private String profile;
     @Nullable
