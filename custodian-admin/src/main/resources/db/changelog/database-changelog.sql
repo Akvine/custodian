@@ -192,6 +192,7 @@ CREATE UNIQUE INDEX REGISTRATION_ACTION_LOGIN_INDX ON REGISTRATION_ACTION_ENTITY
 CREATE INDEX REGISTRATION_ACTION_AEA_INDX ON REGISTRATION_ACTION_ENTITY (ACTION_EXPIRED_AT);
 --rollback not required
 
+
 --changeset akvine:CUSTODIAN-1-12
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSQL:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'BLOCKED_CREDENTIALS_ENTITY' and table_schema = 'public';
