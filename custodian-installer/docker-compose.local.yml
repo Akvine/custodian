@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15.1
+    container_name: postgres-custodian
+    environment:
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./config/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+volumes:
+  es_data:
+    driver: local
+networks:
+  my-network:
+    driver: bridge
