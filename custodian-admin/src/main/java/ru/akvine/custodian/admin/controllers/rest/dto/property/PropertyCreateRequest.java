@@ -1,5 +1,6 @@
 package ru.akvine.custodian.admin.controllers.rest.dto.property;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -20,4 +21,7 @@ public class PropertyCreateRequest {
 
     @NotBlank
     private String value;
+
+    @Valid
+    private MaskingInfo maskingInfo;
 }

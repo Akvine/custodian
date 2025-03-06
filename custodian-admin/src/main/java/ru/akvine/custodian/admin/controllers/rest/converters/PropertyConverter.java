@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.*;
 import ru.akvine.custodian.admin.controllers.rest.parsers.FilePropertiesParser;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
+import ru.akvine.custodian.admin.controllers.rest.utils.StringHelper;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
 import ru.akvine.custodian.core.services.dto.property.PropertyImport;
@@ -29,7 +30,9 @@ public class PropertyConverter {
                 .setProfile(request.getProfile().trim().toLowerCase())
                 .setKey(request.getKey())
                 .setValue(request.getValue())
-                .setDescription(request.getDescription());
+                .setDescription(request.getDescription())
+                .setMask(request.getMaskingInfo() != null ? request.getMaskingInfo().getMask().toCharArray()[0] : null)
+                .setMaskingRadius(request.getMaskingInfo() != null ? request.getMaskingInfo().getRadius() : null);
     }
 
     public PropertyCreateResponse convertToPropertyCreateResponse(PropertyBean propertyBean) {
@@ -67,9 +70,19 @@ public class PropertyConverter {
     }
 
     private PropertyDto buildPropertyDto(PropertyBean propertyBean) {
+        String value;
+        if (propertyBean.getMask() != null && propertyBean.getMaskingRadius() != null) {
+            value = StringHelper.replaceAroundMiddle(
+                    propertyBean.getValue(),
+                    propertyBean.getMask(),
+                    propertyBean.getMaskingRadius());
+        } else {
+            value = propertyBean.getValue();
+        }
+
         return new PropertyDto()
                 .setKey(propertyBean.getKey())
-                .setValue(propertyBean.getValue())
+                .setValue(value)
                 .setDescription(propertyBean.getDescription())
                 .setProfile(propertyBean.getProfile());
     }

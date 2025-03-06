@@ -17,6 +17,10 @@ public class PropertyBean extends SoftBean {
     @Nullable
     private String description;
     private AppBean app;
+    @Nullable
+    private Character mask;
+    @Nullable
+    private Integer maskingRadius;
 
     public PropertyBean(PropertyEntity property) {
         this.id = property.getId();
@@ -25,6 +29,8 @@ public class PropertyBean extends SoftBean {
         this.value = property.getValue();
         this.description = property.getDescription();
         this.app = new AppBean(property.getApp());
+        this.mask = property.getMask();
+        this.maskingRadius = property.getMaskingRadius();
 
         this.createdDate = property.getCreatedDate();
         this.updatedDate = property.getUpdatedDate();

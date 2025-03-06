@@ -10,4 +10,6 @@ public class PropertyDto {
     private String description;
     private String key;
     private String value;
+    private Character mask;
+    private Integer maskingRadius;
 }

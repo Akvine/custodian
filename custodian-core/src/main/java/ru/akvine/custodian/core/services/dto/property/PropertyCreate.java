@@ -15,4 +15,8 @@ public class PropertyCreate {
     private String description;
     private String key;
     private String value;
+    @Nullable
+    private Character mask;
+    @Nullable
+    private Integer maskingRadius;
 }

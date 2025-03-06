@@ -51,7 +51,9 @@ public class PropertyService {
                 .setProfile(profile)
                 .setKey(key)
                 .setValue(propertyCreate.getValue())
-                .setApp(app);
+                .setApp(app)
+                .setMask(propertyCreate.getMask())
+                .setMaskingRadius(propertyCreate.getMaskingRadius());
         PropertyBean savedProperty = new PropertyBean(propertyRepository.save(propertyEntity));
         logger.debug("Successful create property = {}", savedProperty);
         return savedProperty;

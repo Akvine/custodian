@@ -1,5 +1,6 @@
 package ru.akvine.custodian.core.repositories.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,12 @@ public class PropertyEntity extends SoftBaseEntity {
     @ManyToOne
     @JoinColumn(name = "APP_ID", nullable = false)
     private AppEntity app;
+
+    @Column(name = "MASK")
+    @Nullable
+    private Character mask;
+
+    @Column(name = "MASKING_RADIUS")
+    @Nullable
+    private Integer maskingRadius;
 }

@@ -264,3 +264,13 @@ CREATE TABLE ACCESS_TOKEN_ENTITY
 CREATE SEQUENCE SEQ_ACCESS_TOKEN_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX ACCESS_TOKEN_TOKEN_INDX ON ACCESS_TOKEN_ENTITY (TOKEN);
 CREATE INDEX ACCESS_TOKEN_APP_ID ON ACCESS_TOKEN_ENTITY (app_id);
+
+--changeset akvine:CUSTODIAN-2-1
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSQL:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns WHERE table_name = 'PROPERTY_ENTITY' AND column_name = 'MASK';
+ALTER TABLE PROPERTY_ENTITY ADD MASK CHAR(1);
+
+--changeset akvine:CUSTODIAN-2-2
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSQL:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns WHERE table_name = 'PROPERTY_ENTITY' AND column_name = 'MASKING_RADIUS';
+ALTER TABLE PROPERTY_ENTITY ADD MASKING_RADIUS INT;
