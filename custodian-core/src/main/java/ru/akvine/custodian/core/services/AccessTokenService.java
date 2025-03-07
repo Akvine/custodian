@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.commons.util.UUIDGenerator;
 import ru.akvine.custodian.core.enums.AccessRights;
+import ru.akvine.custodian.core.exceptions.token.GenerateTokenException;
 import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
@@ -17,7 +18,6 @@ import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,8 @@ public class AccessTokenService {
 
     @Value("${default.expired.days.count}")
     private int defaultExpiredDaysCount;
+    @Value("${access.token.max.count.per.app}")
+    private int maxCountPerApp;
 
     public AccessTokenBean generate(TokenGenerate tokenGenerate) {
         Preconditions.checkNotNull(tokenGenerate, "TokenGenerate is null");
@@ -37,24 +39,27 @@ public class AccessTokenService {
         AppEntity appEntity = appService.verifyExistsByTitle(
                 tokenGenerate.getAppTitle(),
                 tokenGenerate.getClientId());
-        Optional<AccessTokenEntity> token = accessTokenRepository.findByAppId(appEntity.getId());
+
+        long count = accessTokenRepository.count(appEntity.getTitle());
+        if (count == maxCountPerApp) {
+            String errorMessage = String.format(
+                    "Can't generate token! Limit per app reached = [%s]",
+                    maxCountPerApp
+                    );
+            throw new GenerateTokenException(errorMessage);
+        }
+
         ZonedDateTime expiredAt = tokenGenerate.getExpiredAt();
         if (expiredAt == null) {
             expiredAt = ZonedDateTime.now().plusDays(defaultExpiredDaysCount);
         }
 
-        AccessTokenEntity generatedToken;
-        if (token.isEmpty()) {
-            generatedToken = new AccessTokenEntity()
-                    .setAccessRights(String.join(",", tokenGenerate.getAccessRights()
-                                    .stream().map(AccessRights::toString).toList()))
-                    .setExpiredAt(expiredAt)
-                    .setApp(appEntity)
-                    .setToken(UUIDGenerator.uuidWithNoDashes());
-
-        } else {
-            generatedToken = token.get().setToken(UUIDGenerator.uuidWithNoDashes());
-        }
+        AccessTokenEntity generatedToken = new AccessTokenEntity()
+                .setExpiredAt(expiredAt)
+                .setApp(appEntity)
+                .setToken(UUIDGenerator.uuidWithNoDashes())
+                .setAccessRights(String.join(",", tokenGenerate.getAccessRights()
+                        .stream().map(AccessRights::toString).toList()));
 
         logger.debug("Access token was successful generated");
         return new AccessTokenBean(accessTokenRepository.save(generatedToken));

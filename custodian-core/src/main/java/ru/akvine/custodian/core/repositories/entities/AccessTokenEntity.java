@@ -22,8 +22,8 @@ public class AccessTokenEntity extends BaseEntity {
     @SequenceGenerator(name = "accessTokenEntitySeq", sequenceName = "SEQ_ACCESS_TOKEN_ENTITY", allocationSize = 1000)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "APP_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "APP_ID", nullable = false)
     private AppEntity app;
 
     @Column(name = "TOKEN", nullable = false)

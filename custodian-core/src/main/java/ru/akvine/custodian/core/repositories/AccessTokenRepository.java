@@ -21,4 +21,8 @@ public interface AccessTokenRepository extends JpaRepository<AccessTokenEntity, 
     @Query("from AccessTokenEntity ate where ate.token = :token")
     Optional<AccessTokenEntity> findByToken(@Param("token") String token);
 
+    @Query("select count(*) from AccessTokenEntity ate " +
+            "where ate.app.title = :title")
+    long count(@Param("title") String appTitle);
+
 }
