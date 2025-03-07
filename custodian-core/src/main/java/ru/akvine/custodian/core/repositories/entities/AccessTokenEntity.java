@@ -36,4 +36,7 @@ public class AccessTokenEntity extends BaseEntity {
     public boolean isExpired() {
         return getCreatedDate().isAfter(expiredAt);
     }
+
+    @Column(name = "ACCESS_RIGHTS", nullable = false)
+    private String accessRights = "ALL";
 }

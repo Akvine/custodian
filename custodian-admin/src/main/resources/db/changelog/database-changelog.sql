@@ -274,3 +274,8 @@ ALTER TABLE PROPERTY_ENTITY ADD MASK CHAR(1);
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSQL:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns WHERE table_name = 'PROPERTY_ENTITY' AND column_name = 'MASKING_RADIUS';
 ALTER TABLE PROPERTY_ENTITY ADD MASKING_RADIUS INT;
+
+--changeset akvine:CUSTODIAN-2-3
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSQL:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns WHERE table_name = 'ACCESS_TOKEN_ENTITY' AND column_name = 'ACCESS_RIGHTS';
+ALTER TABLE ACCESS_TOKEN_ENTITY ADD ACCESS_RIGHTS VARCHAR(64) NOT NULL DEFAULT 'ALL';

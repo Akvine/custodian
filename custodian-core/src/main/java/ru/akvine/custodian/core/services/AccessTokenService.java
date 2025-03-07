@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.commons.util.UUIDGenerator;
+import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
@@ -45,6 +46,8 @@ public class AccessTokenService {
         AccessTokenEntity generatedToken;
         if (token.isEmpty()) {
             generatedToken = new AccessTokenEntity()
+                    .setAccessRights(String.join(",", tokenGenerate.getAccessRights()
+                                    .stream().map(AccessRights::toString).toList()))
                     .setExpiredAt(expiredAt)
                     .setApp(appEntity)
                     .setToken(UUIDGenerator.uuidWithNoDashes());

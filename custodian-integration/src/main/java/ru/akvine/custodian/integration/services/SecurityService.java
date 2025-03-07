@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class SecurityService {
     private final AccessTokenRepository accessTokenRepository;
 
     private final static String BEARER_TOKEN_PREFIX = "Bearer ";
@@ -28,6 +29,16 @@ public class AuthenticationService {
         }
 
         return new AccessTokenBean(accessTokenEntityOptional.get());
+    }
+
+    public void checkAccess(AccessTokenBean accessToken, AccessRights accessRights) {
+        Preconditions.checkNotNull(accessToken, "accessToken is null");
+        Preconditions.checkNotNull(accessRights, "accessRights is null");
+
+        if (!accessToken.getAccessRights().contains(accessRights)) {
+            String errorMessage = "Access denied. The provided token does not have the necessary permissions to perform this action";
+            throw new AuthException(errorMessage);
+        }
     }
 
     private String extractToken(String authorizationToken) {

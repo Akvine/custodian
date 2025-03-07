@@ -13,4 +13,6 @@ public class TokenGenerateRequest {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String expiredDate;
+
+    private String accessRights;
 }
