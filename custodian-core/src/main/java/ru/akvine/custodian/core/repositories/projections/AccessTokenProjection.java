@@ -1,4 +1,6 @@
 package ru.akvine.custodian.core.repositories.projections;
 
-public record AccessTokenProjection(String appTitle, String token) {
+import java.time.ZonedDateTime;
+
+public record AccessTokenProjection(String appTitle, String token, ZonedDateTime expiredAt) {
 }

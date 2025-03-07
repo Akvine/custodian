@@ -9,5 +9,6 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class TokenListResponse extends SuccessfulResponse {
+    private int count;
     private List<TokenDto> tokens;
 }

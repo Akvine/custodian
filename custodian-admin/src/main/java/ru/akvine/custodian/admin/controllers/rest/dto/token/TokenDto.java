@@ -12,4 +12,7 @@ public class TokenDto {
 
     @NotBlank
     private String token;
+
+    @NotBlank
+    private String expiredAt;
 }

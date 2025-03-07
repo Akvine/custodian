@@ -47,12 +47,16 @@ public class AccessTokenConverter {
 
     public TokenListResponse convertToTokenListResponse(List<AccessTokenProjection> tokens) {
         Preconditions.checkNotNull(tokens, "tokens is null");
-        return new TokenListResponse().setTokens(tokens.stream().map(this::buildTokenDto).toList());
+        List<TokenDto> tokensDtos = tokens.stream().map(this::buildTokenDto).toList();
+        return new TokenListResponse()
+                .setCount(tokensDtos.size())
+                .setTokens(tokensDtos);
     }
 
     private TokenDto buildTokenDto(AccessTokenProjection tokenProjection) {
         return new TokenDto()
                 .setAppTitle(tokenProjection.appTitle())
-                .setToken(tokenProjection.token());
+                .setToken(tokenProjection.token())
+                .setExpiredAt(tokenProjection.expiredAt().toString());
     }
 }
