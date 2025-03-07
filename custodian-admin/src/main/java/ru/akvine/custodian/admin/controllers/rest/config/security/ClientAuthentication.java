@@ -1,10 +1,10 @@
 package ru.akvine.custodian.admin.controllers.rest.config.security;
 
 
-import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,8 +19,8 @@ public class ClientAuthentication implements Authentication {
     public ClientAuthentication(long id,
                                 String uuid,
                                 String email) {
-        Preconditions.checkNotNull(uuid, "uuid is null");
-        Preconditions.checkNotNull(email, "email is null");
+        Asserts.isNotNull(uuid, "uuid is null");
+        Asserts.isNotNull(email, "email is null");
 
         this.id = id;
         this.uuid = uuid;

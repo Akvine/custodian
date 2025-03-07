@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +11,7 @@ import ru.akvine.custodian.core.repositories.entities.security.OtpInfo;
 import ru.akvine.custodian.core.repositories.security.OtpCounterRepository;
 import ru.akvine.custodian.core.services.notification.NotificationProvider;
 import ru.akvine.custodian.core.services.notification.dummy.ConstantNotificationService;
+import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.core.utils.OneTimePasswordGenerator;
 
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ public class OtpService {
     private long otpLifetimeSeconds;
 
     public OtpInfo getOneTimePassword(String login) {
-        Preconditions.checkNotNull(login, "login is null");
+        Asserts.isNotNull(login, "login is null");
 
         String value;
         if (dummyEnabled && notificationProvider instanceof ConstantNotificationService) {
@@ -55,7 +55,7 @@ public class OtpService {
 
     @Transactional
     public long getNextOtpNumber(String login) {
-        Preconditions.checkNotNull(login, "login is null");
+        Asserts.isNotNull(login, "login is null");
 
         LocalDateTime now = LocalDateTime.now();
         OtpCounterEntity otpCounter = otpCounterRepository.findByLogin(login);

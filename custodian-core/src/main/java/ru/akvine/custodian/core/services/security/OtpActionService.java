@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import ru.akvine.custodian.core.repositories.entities.security.OtpActionEntity;
 import ru.akvine.custodian.core.repositories.entities.security.OtpInfo;
 import ru.akvine.custodian.core.repositories.security.ActionRepository;
 import ru.akvine.custodian.core.services.notification.NotificationProvider;
+import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.core.utils.LockHelper;
 
 import java.time.LocalDateTime;
@@ -32,7 +32,7 @@ public abstract class OtpActionService<T extends OneTimePasswordable> {
     private long otpDelaySeconds;
 
     public <R> R generateNewOtp(String payload) {
-        Preconditions.checkNotNull(payload, "payload is null");
+        Asserts.isNotNull(payload, "payload is null");
 
         String lockId = getLock(payload);
 

@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +16,7 @@ import ru.akvine.custodian.core.services.ClientService;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +35,7 @@ public class AccessRestoreActionService extends OtpActionService<AccessRestoreAc
     private final ClientService clientService;
 
     public AccessRestoreActionResult startAccessRestore(AccessRestoreActionRequest accessRestoreActionRequest) {
-        Preconditions.checkNotNull(accessRestoreActionRequest, "accessRestoreActionRequest is null");
+        Asserts.isNotNull(accessRestoreActionRequest, "accessRestoreActionRequest is null");
 
         String login = accessRestoreActionRequest.getLogin();
         String sessionId = accessRestoreActionRequest.getSessionId();
@@ -74,14 +74,14 @@ public class AccessRestoreActionService extends OtpActionService<AccessRestoreAc
     }
 
     public AccessRestoreActionResult generateNewOneTimePassword(AccessRestoreActionRequest request) {
-        Preconditions.checkNotNull(request, "accessRestoreActionRequest is null");
-        Preconditions.checkNotNull(request.getLogin(), "accessRestoreActionRequest.login is null");
-        Preconditions.checkNotNull(request.getSessionId(), "accessRestoreActionRequest.sessionId is null");
+        Asserts.isNotNull(request, "accessRestoreActionRequest is null");
+        Asserts.isNotNull(request.getLogin(), "accessRestoreActionRequest.login is null");
+        Asserts.isNotNull(request.getSessionId(), "accessRestoreActionRequest.sessionId is null");
         return generateNewOtp(request.getLogin());
     }
 
     public AccessRestoreActionResult checkOneTimePassword(AccessRestoreActionRequest actionRequest) {
-        Preconditions.checkNotNull(actionRequest, "accessRestoreActionRequest is null");
+        Asserts.isNotNull(actionRequest, "accessRestoreActionRequest is null");
 
         String login = actionRequest.getLogin();
         String otpValue = actionRequest.getOtp();
@@ -139,7 +139,7 @@ public class AccessRestoreActionService extends OtpActionService<AccessRestoreAc
     }
 
     public ClientBean finishAccessRestore(AccessRestoreActionRequest actionRequest) {
-        Preconditions.checkNotNull(actionRequest, "actionRestoreRequest is null");
+        Asserts.isNotNull(actionRequest, "actionRestoreRequest is null");
 
         String login = actionRequest.getLogin();
         String password = actionRequest.getPassword();

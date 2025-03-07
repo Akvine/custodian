@@ -1,6 +1,5 @@
 package ru.akvine.custodian.admin.controllers.rest.converters.security;
 
-import com.google.common.base.Preconditions;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +12,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.Ac
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 @RequiredArgsConstructor
@@ -25,8 +25,8 @@ public class AccessRestoreConverter {
 
     public AccessRestoreActionRequest convertToAccessRestoreActionRequest(AccessRestoreStartRequest request,
                                                                           HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "accessRestoreStartRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "accessRestoreStartRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
                 .setSessionId(httpServletRequest.getSession(true).getId());
@@ -34,8 +34,8 @@ public class AccessRestoreConverter {
 
     public AccessRestoreActionRequest convertToAccessRestoreActionRequest(AccessRestoreCheckOtpRequest request,
                                                                           HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "accessRestoreCheckOtpRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "accessRestoreCheckOtpRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
 
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
@@ -45,8 +45,8 @@ public class AccessRestoreConverter {
 
     public AccessRestoreActionRequest convertToAccessRestoreActionRequest(AccessRestoreFinishRequest request,
                                                                           HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "accessRestoreFinishRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "accessRestoreFinishRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
         return new AccessRestoreActionRequest()
                 .setLogin(request.getEmail())
                 .setSessionId(securityHelper.getSession(httpServletRequest).getId())
@@ -54,9 +54,9 @@ public class AccessRestoreConverter {
     }
 
     public AccessRestoreResponse convertToAccessRestoreResponse(AccessRestoreActionResult result) {
-        Preconditions.checkNotNull(result, "accessRestoreActionResult is null");
-        Preconditions.checkNotNull(result.getState(), "accessRestoreActionResult.state is null");
-        Preconditions.checkNotNull(result.getOtp(), "accessRestoreActionResult.otp is null");
+        Asserts.isNotNull(result, "accessRestoreActionResult is null");
+        Asserts.isNotNull(result.getState(), "accessRestoreActionResult.state is null");
+        Asserts.isNotNull(result.getOtp(), "accessRestoreActionResult.otp is null");
 
         OtpActionResponse otpActionResponse = new OtpActionResponse()
                 .setActionExpiredAt(result.getOtp().getExpiredAt().toString())

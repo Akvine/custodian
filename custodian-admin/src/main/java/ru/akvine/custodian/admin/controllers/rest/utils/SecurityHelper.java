@@ -1,6 +1,5 @@
 package ru.akvine.custodian.admin.controllers.rest.utils;
 
-import com.google.common.base.Preconditions;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 import ru.akvine.custodian.admin.controllers.rest.config.security.ClientAuthentication;
 import ru.akvine.custodian.core.exceptions.security.NoSessionException;
 import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 @RequiredArgsConstructor
@@ -56,7 +56,7 @@ public class SecurityHelper {
 
     public ClientAuthentication getCurrentUser() {
         ClientAuthentication user = getCurrentUserOrNull();
-        Preconditions.checkNotNull(user, "user is null");
+        Asserts.isNotNull(user, "user is null");
         return user;
     }
 

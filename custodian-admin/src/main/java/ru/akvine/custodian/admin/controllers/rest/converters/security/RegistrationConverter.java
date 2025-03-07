@@ -1,6 +1,5 @@
 package ru.akvine.custodian.admin.controllers.rest.converters.security;
 
-import com.google.common.base.Preconditions;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +9,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.registration.*;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionRequest;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 @RequiredArgsConstructor
@@ -21,8 +21,8 @@ public class RegistrationConverter {
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationStartRequest request,
                                                                         HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "registrationStartRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "registrationStartRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
                 .setSessionId(httpServletRequest.getSession(true).getId());
@@ -30,8 +30,8 @@ public class RegistrationConverter {
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationCheckOtpRequest request,
                                                                         HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "registrationCheckOtpRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "registrationCheckOtpRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
 
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
@@ -41,8 +41,8 @@ public class RegistrationConverter {
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationNewOtpRequest request,
                                                                         HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "registrationNewOtpRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "registrationNewOtpRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
                 .setSessionId(securityHelper.getSession(httpServletRequest).getId());
@@ -50,8 +50,8 @@ public class RegistrationConverter {
 
     public RegistrationActionRequest convertToRegistrationActionRequest(RegistrationFinishRequest request,
                                                                         HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "registrationFinishRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "registrationFinishRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
 
         return new RegistrationActionRequest()
                 .setEmail(request.getEmail())
@@ -62,7 +62,7 @@ public class RegistrationConverter {
     }
 
     public RegistrationResponse convertToRegistrationResponse(RegistrationActionResult result) {
-        Preconditions.checkNotNull(result, "registrationActionResult is null");
+        Asserts.isNotNull(result, "registrationActionResult is null");
 
         OtpActionResponse otpActionResponse = new OtpActionResponse()
                 .setActionExpiredAt(result.getOtp().getExpiredAt().toString())

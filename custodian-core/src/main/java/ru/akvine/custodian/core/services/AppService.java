@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
 import ru.akvine.custodian.core.services.domain.AppBean;
 import ru.akvine.custodian.core.services.dto.app.AppCreate;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class AppService {
     private final ClientService clientService;
 
     public AppBean create(AppCreate appCreate) {
-        Preconditions.checkNotNull(appCreate, "appCreate is null");
+        Asserts.isNotNull(appCreate, "appCreate is null");
         logger.debug("App create by = {}", appCreate);
 
         ClientEntity client = clientService.verifyExistsByUuid(appCreate.getClientUuid());
@@ -59,7 +59,7 @@ public class AppService {
     }
 
     public AppEntity verifyExistsByTitle(String title, long clientId) {
-        Preconditions.checkNotNull(title, "title is null");
+        Asserts.isNotNull(title, "title is null");
         return appRepository
                 .findByTitleAndClientId(title, clientId)
                 .orElseThrow(() -> {

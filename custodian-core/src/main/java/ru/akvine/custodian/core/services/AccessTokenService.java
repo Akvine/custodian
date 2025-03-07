@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,7 @@ import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
 import ru.akvine.custodian.core.services.domain.AppBean;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,7 +32,7 @@ public class AccessTokenService {
     private int maxCountPerApp;
 
     public AccessTokenBean generate(TokenGenerate tokenGenerate) {
-        Preconditions.checkNotNull(tokenGenerate, "TokenGenerate is null");
+        Asserts.isNotNull(tokenGenerate, "TokenGenerate is null");
         logger.debug("Generate new token for app with title = {} for client with id = {}",
                 tokenGenerate.getAppTitle(), tokenGenerate.getClientId());
 

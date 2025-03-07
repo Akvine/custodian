@@ -1,6 +1,5 @@
 package ru.akvine.custodian.admin.controllers.rest.converters;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +11,7 @@ import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
 import ru.akvine.custodian.core.services.dto.property.PropertyImport;
 import ru.akvine.custodian.core.services.dto.property.PropertyList;
-
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class PropertyConverter {
     private final SecurityHelper securityHelper;
 
     public PropertyCreate convertToPropertyCreate(PropertyCreateRequest request) {
-        Preconditions.checkNotNull(request, "propertyCreateRequest is null");
+        Asserts.isNotNull(request, "propertyCreateRequest is null");
         return new PropertyCreate()
                 .setClientId(securityHelper.getCurrentUser().getId())
                 .setAppTitle(request.getAppTitle().trim().toLowerCase())
@@ -36,12 +35,12 @@ public class PropertyConverter {
     }
 
     public PropertyCreateResponse convertToPropertyCreateResponse(PropertyBean propertyBean) {
-        Preconditions.checkNotNull(propertyBean, "propertyBean is null");
+        Asserts.isNotNull(propertyBean, "propertyBean is null");
         return new PropertyCreateResponse().setProperty(buildPropertyDto(propertyBean));
     }
 
     public PropertyList convertToPropertyList(PropertyListRequest request) {
-        Preconditions.checkNotNull(request, "propertyListRequest is null");
+        Asserts.isNotNull(request, "propertyListRequest is null");
         return new PropertyList()
                 .setClientId(securityHelper.getCurrentUser().getId())
                 .setAppTitle(request.getAppTitle())
@@ -50,7 +49,7 @@ public class PropertyConverter {
     }
 
     public PropertyListResponse convertToPropertyListResponse(List<PropertyBean> properties) {
-        Preconditions.checkNotNull(properties, "properties is null");
+        Asserts.isNotNull(properties, "properties is null");
         return new PropertyListResponse()
                 .setCount(properties.size())
                 .setProperties(properties.stream().map(this::buildPropertyDto).toList());
@@ -59,9 +58,9 @@ public class PropertyConverter {
     public PropertyImport convertToPropertyImport(MultipartFile file,
                                                   String appTitle,
                                                   String profile) {
-        Preconditions.checkNotNull(file, "file is null");
-        Preconditions.checkNotNull(appTitle, "appTitle is null");
-        Preconditions.checkNotNull(profile, "profile is null");
+        Asserts.isNotNull(file, "file is null");
+        Asserts.isNotNull(appTitle, "appTitle is null");
+        Asserts.isNotNull(profile, "profile is null");
         return new PropertyImport()
                 .setClientId(securityHelper.getCurrentUser().getId())
                 .setProperties(filePropertiesParser.parse(file))

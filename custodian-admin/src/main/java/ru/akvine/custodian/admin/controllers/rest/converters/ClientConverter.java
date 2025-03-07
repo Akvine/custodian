@@ -1,17 +1,17 @@
 package ru.akvine.custodian.admin.controllers.rest.converters;
 
-import com.google.common.base.Preconditions;
 import org.springframework.stereotype.Component;
 import ru.akvine.custodian.admin.controllers.rest.dto.client.ClientCreateRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.client.ClientCreateResponse;
 import ru.akvine.custodian.admin.controllers.rest.dto.client.ClientDto;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.client.ClientCreate;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 public class ClientConverter {
     public ClientCreate convertToClientCreate(ClientCreateRequest request) {
-        Preconditions.checkNotNull(request, "clientCreateRequest is null");
+        Asserts.isNotNull(request, "clientCreateRequest is null");
         return new ClientCreate()
                 .setAge(request.getAge())
                 .setEmail(request.getEmail())
@@ -20,7 +20,7 @@ public class ClientConverter {
     }
 
     public ClientCreateResponse convertToClientCreateResponse(ClientBean clientBean) {
-        Preconditions.checkNotNull(clientBean, "clientBean is null");
+        Asserts.isNotNull(clientBean, "clientBean is null");
         return new ClientCreateResponse().setClient(buildClientDto(clientBean));
     }
 

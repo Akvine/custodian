@@ -1,6 +1,5 @@
 package ru.akvine.custodian.integration.services;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -8,6 +7,7 @@ import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.integration.exceptions.AuthException;
 
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class SecurityService {
     private final static String BEARER_TOKEN_PREFIX = "Bearer ";
 
     public AccessTokenBean check(String authorizationToken) {
-        Preconditions.checkNotNull(authorizationToken, "authorizationToken is null");
+        Asserts.isNotNull(authorizationToken, "authorizationToken is null");
 
         String extractedToken = extractToken(authorizationToken);
         Optional<AccessTokenEntity> accessTokenEntityOptional = accessTokenRepository.findByToken(extractedToken);
@@ -32,8 +32,8 @@ public class SecurityService {
     }
 
     public void checkAccess(AccessTokenBean accessToken, AccessRights accessRights) {
-        Preconditions.checkNotNull(accessToken, "accessToken is null");
-        Preconditions.checkNotNull(accessRights, "accessRights is null");
+        Asserts.isNotNull(accessToken, "accessToken is null");
+        Asserts.isNotNull(accessRights, "accessRights is null");
 
         if (!accessToken.getAccessRights().contains(accessRights)) {
             String errorMessage = "Access denied. The provided token does not have the necessary permissions to perform this action";

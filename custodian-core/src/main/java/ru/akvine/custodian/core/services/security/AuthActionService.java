@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +15,7 @@ import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.security.OtpCreateNewAction;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +35,7 @@ public class AuthActionService extends PasswordRequiredActionService<AuthActionE
     private int otpMaxNewGenerationPerAction;
 
     public AuthActionResult startAuth(AuthActionRequest request) {
-        Preconditions.checkNotNull(request, "authActionRequest is null");
+        Asserts.isNotNull(request, "authActionRequest is null");
 
         String login = request.getEmail();
         String password = request.getPassword();
@@ -83,7 +83,7 @@ public class AuthActionService extends PasswordRequiredActionService<AuthActionE
     }
 
     public ClientBean finishAuth(AuthActionRequest request) {
-        Preconditions.checkNotNull(request, "authActionRequest is null");
+        Asserts.isNotNull(request, "authActionRequest is null");
 
         String login = request.getEmail();
         String otp = request.getOtp();

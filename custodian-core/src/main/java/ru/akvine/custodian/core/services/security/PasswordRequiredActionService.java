@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +10,7 @@ import ru.akvine.custodian.core.repositories.entities.security.OtpInfo;
 import ru.akvine.custodian.core.services.ClientService;
 import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.security.OtpCreateNewAction;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Service
 @Slf4j
@@ -21,8 +21,8 @@ public abstract class PasswordRequiredActionService <T extends AccountPasswordab
     protected PasswordService passwordService;
 
     protected boolean isValidPassword(ClientBean clientBean, String password) {
-        Preconditions.checkNotNull(clientBean, "clientBean is null");
-        Preconditions.checkNotNull(password, "password is null");
+        Asserts.isNotNull(clientBean, "clientBean is null");
+        Asserts.isNotNull(password, "password is null");
         return passwordService.isValidPassword(clientBean, password);
     }
 

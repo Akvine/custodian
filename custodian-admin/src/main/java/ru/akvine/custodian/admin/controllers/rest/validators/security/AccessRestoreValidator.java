@@ -1,12 +1,12 @@
 package ru.akvine.custodian.admin.controllers.rest.validators.security;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.EmailRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.AccessRestoreFinishRequest;
 import ru.akvine.custodian.core.exceptions.client.ClientNotFoundException;
 import ru.akvine.custodian.core.services.ClientService;
+import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.core.validators.EmailValidator;
 import ru.akvine.custodian.core.validators.PasswordValidator;
 
@@ -18,8 +18,8 @@ public class AccessRestoreValidator {
     private final PasswordValidator passwordValidator;
 
     public void verifyAccessRestore(EmailRequest request) {
-        Preconditions.checkNotNull(request, "emailRequest is null");
-        Preconditions.checkNotNull(request.getEmail(), "emailRequest.email is null");
+        Asserts.isNotNull(request, "emailRequest is null");
+        Asserts.isNotNull(request.getEmail(), "emailRequest.email is null");
 
         String email = request.getEmail();
         emailValidator.validate(email);
@@ -27,9 +27,9 @@ public class AccessRestoreValidator {
     }
 
     public void verifyAccessRestoreFinish(AccessRestoreFinishRequest request) {
-        Preconditions.checkNotNull(request, "accessRestoreFinishRequest is null");
-        Preconditions.checkNotNull(request.getEmail(), "accessRestoreFinishRequest.email is null");
-        Preconditions.checkNotNull(request.getPassword(), "accessRestoreFinishRequest.password is null");
+        Asserts.isNotNull(request, "accessRestoreFinishRequest is null");
+        Asserts.isNotNull(request.getEmail(), "accessRestoreFinishRequest.email is null");
+        Asserts.isNotNull(request.getPassword(), "accessRestoreFinishRequest.password is null");
 
         verifyNotExistsByLogin(request.getEmail());
         passwordValidator.validate(request.getPassword());

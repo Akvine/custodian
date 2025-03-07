@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services.security;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +18,7 @@ import ru.akvine.custodian.core.services.domain.ClientBean;
 import ru.akvine.custodian.core.services.dto.client.ClientCreate;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionRequest;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +38,7 @@ public class RegistrationActionService extends OtpActionService<RegistrationActi
         private int otpMaxNewGenerationPerAction;
 
         public RegistrationActionResult startRegistration(RegistrationActionRequest request) {
-            Preconditions.checkNotNull(request, "registrationActionRequest is null");
+            Asserts.isNotNull(request, "registrationActionRequest is null");
 
             String login = request.getEmail();
             String sessionId = request.getSessionId();
@@ -78,15 +78,15 @@ public class RegistrationActionService extends OtpActionService<RegistrationActi
         }
 
         public RegistrationActionResult checkOneTimePassword(RegistrationActionRequest request) {
-            Preconditions.checkNotNull(request, "registrationAction is null");
+            Asserts.isNotNull(request, "registrationAction is null");
 
             String login = request.getEmail();
             String sessionId = request.getSessionId();
             String otp = request.getOtp();
 
-            Preconditions.checkNotNull(login, "login is null");
-            Preconditions.checkNotNull(sessionId, "sessionId is null");
-            Preconditions.checkNotNull(otp, "otp is null");
+            Asserts.isNotNull(login, "login is null");
+            Asserts.isNotNull(sessionId, "sessionId is null");
+            Asserts.isNotNull(otp, "otp is null");
 
             verifyNotBlocked(login);
 
@@ -104,14 +104,14 @@ public class RegistrationActionService extends OtpActionService<RegistrationActi
         }
 
         public RegistrationActionResult generateNewOneTimePassword(RegistrationActionRequest request) {
-            Preconditions.checkNotNull(request, "registrationActionRequest is null");
-            Preconditions.checkNotNull(request.getEmail(), "registrationActionRequest.email is null");
-            Preconditions.checkNotNull(request.getSessionId(), "registrationActionRequest.sessionId is null");
+            Asserts.isNotNull(request, "registrationActionRequest is null");
+            Asserts.isNotNull(request.getEmail(), "registrationActionRequest.email is null");
+            Asserts.isNotNull(request.getSessionId(), "registrationActionRequest.sessionId is null");
             return generateNewOtp(request.getEmail());
         }
 
         public ClientBean finishRegistration(RegistrationActionRequest request) {
-            Preconditions.checkNotNull(request, "registrationActionRequest is null");
+            Asserts.isNotNull(request, "registrationActionRequest is null");
 
             String login = request.getEmail();
             verifyNotBlocked(login);

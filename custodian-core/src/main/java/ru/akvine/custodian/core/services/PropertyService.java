@@ -1,6 +1,5 @@
 package ru.akvine.custodian.core.services;
 
-import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
 import ru.akvine.custodian.core.services.dto.property.PropertyImport;
 import ru.akvine.custodian.core.services.dto.property.PropertyList;
+import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PropertyService {
     private final AppService appService;
 
     public PropertyBean create(PropertyCreate propertyCreate) {
-        Preconditions.checkNotNull(propertyCreate, "propertyCreate is null");
+        Asserts.isNotNull(propertyCreate, "propertyCreate is null");
         logger.debug("Create property by = [{}]", propertyCreate);
 
         String profile = propertyCreate.getProfile();
@@ -60,7 +60,7 @@ public class PropertyService {
     }
 
     public List<PropertyBean> list(PropertyList propertyList) {
-        Preconditions.checkNotNull(propertyList, "propertyList is null");
+        Asserts.isNotNull(propertyList, "propertyList is null");
         logger.debug("List properties by = {}", propertyList);
 
         String appTitle = propertyList.getAppTitle();
@@ -93,7 +93,7 @@ public class PropertyService {
     }
 
     public boolean importProperties(PropertyImport propertyImport) {
-        Preconditions.checkNotNull(propertyImport, "propertyImport is null");
+        Asserts.isNotNull(propertyImport, "propertyImport is null");
 
         String appTitle = propertyImport.getAppTitle();
         String profile = propertyImport.getProfile();

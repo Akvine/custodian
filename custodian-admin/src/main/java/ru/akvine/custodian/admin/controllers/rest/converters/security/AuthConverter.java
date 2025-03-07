@@ -1,6 +1,5 @@
 package ru.akvine.custodian.admin.controllers.rest.converters.security;
 
-import com.google.common.base.Preconditions;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +12,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthResponse
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
+import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +23,8 @@ public class AuthConverter {
     private final SecurityHelper securityHelper;
 
     public AuthActionRequest convertToAuthActionRequest(AuthCredentialsRequest request, HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "authCredentialsRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "authCredentialsRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
         return new AuthActionRequest()
                 .setEmail(request.getEmail())
                 .setSessionId(httpServletRequest.getSession(true).getId())
@@ -32,8 +32,8 @@ public class AuthConverter {
     }
 
     public AuthActionRequest convertToAuthActionRequest(AuthFinishRequest request, HttpServletRequest httpServletRequest) {
-        Preconditions.checkNotNull(request, "authFinishRequest is null");
-        Preconditions.checkNotNull(httpServletRequest, "httpServletRequest is null");
+        Asserts.isNotNull(request, "authFinishRequest is null");
+        Asserts.isNotNull(httpServletRequest, "httpServletRequest is null");
 
         return new AuthActionRequest()
                 .setEmail(request.getEmail())
@@ -42,8 +42,8 @@ public class AuthConverter {
     }
 
     public AuthResponse convertToAuthResponse(AuthActionResult result) {
-        Preconditions.checkNotNull(result, "authActionResult is null");
-        Preconditions.checkNotNull(result.getOtp(), "authActionResult.otp is null");
+        Asserts.isNotNull(result, "authActionResult is null");
+        Asserts.isNotNull(result.getOtp(), "authActionResult.otp is null");
 
         OtpActionResponse otpActionResponse = new OtpActionResponse()
                 .setActionExpiredAt(result.getOtp().getExpiredAt().toString())
