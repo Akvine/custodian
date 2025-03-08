@@ -2,13 +2,12 @@ package ru.akvine.custodian.admin.controllers.rest.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.akvine.custodian.admin.controllers.rest.dto.app.AppCreateRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.app.AppCreateResponse;
-import ru.akvine.custodian.admin.controllers.rest.dto.app.AppDto;
-import ru.akvine.custodian.admin.controllers.rest.dto.app.AppListResponse;
+import ru.akvine.custodian.admin.controllers.rest.dto.app.*;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.domain.AppBean;
 import ru.akvine.custodian.core.services.dto.app.AppCreate;
+import ru.akvine.custodian.core.services.dto.app.AppDelete;
+import ru.akvine.custodian.core.services.dto.app.AppUpdate;
 import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.List;
@@ -31,6 +30,22 @@ public class AppConverter {
                 .setClientUuid(securityHelper.getCurrentUser().getUuid())
                 .setTitle(request.getTitle().toLowerCase().trim())
                 .setDescription(request.getDescription());
+    }
+
+    public AppUpdate convertToAppUpdate(AppUpdateRequest request) {
+        Asserts.isNotNull(request, "appUpdateRequest is null");
+        return new AppUpdate()
+                .setClientId(securityHelper.getCurrentUser().getId())
+                .setAppTitle(request.getTitle())
+                .setNewTitle(request.getNewTitle())
+                .setNewDescription(request.getNewDescription());
+    }
+
+    public AppDelete convertToAppDelete(String title) {
+        Asserts.isNotNull(title, "title is null");
+        return new AppDelete()
+                .setAppTitle(title)
+                .setClientId(securityHelper.getCurrentUser().getId());
     }
 
     public AppCreateResponse convertToAppCreateResponse(AppBean appBean) {
