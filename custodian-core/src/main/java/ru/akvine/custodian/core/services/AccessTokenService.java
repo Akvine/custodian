@@ -13,6 +13,7 @@ import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
 import ru.akvine.custodian.core.services.domain.AppBean;
+import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 import ru.akvine.custodian.core.utils.Asserts;
 
@@ -45,7 +46,7 @@ public class AccessTokenService {
             String errorMessage = String.format(
                     "Can't generate token! Limit per app reached = [%s]",
                     maxCountPerApp
-                    );
+            );
             throw new GenerateTokenException(errorMessage);
         }
 
@@ -73,5 +74,14 @@ public class AccessTokenService {
 
         return accessTokenRepository
                 .findByAppIds(appIds);
+    }
+
+    public void delete(TokenDelete tokenDelete) {
+        Asserts.isNotNull(tokenDelete);
+
+        List<AccessTokenEntity> tokens = accessTokenRepository.findByAppTitleAndTokens(
+                tokenDelete.getAppTitle(),
+                tokenDelete.getTokens());
+        accessTokenRepository.deleteAll(tokens);
     }
 }

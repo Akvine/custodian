@@ -3,14 +3,12 @@ package ru.akvine.custodian.admin.controllers.rest.converters;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenDto;
-import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenGenerateRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenGenerateResponse;
-import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenListResponse;
+import ru.akvine.custodian.admin.controllers.rest.dto.token.*;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.core.utils.DateUtils;
@@ -30,6 +28,14 @@ public class AccessTokenConverter {
                 .setAppTitle(request.getAppTitle())
                 .setAccessRights(convertToAccessRights(request.getAccessRights()))
                 .setExpiredAt(request.getExpiredDate() == null ? null : DateUtils.convertToZonedDateTime(request.getExpiredDate()));
+    }
+
+    public TokenDelete convertToTokenDelete(TokenDeleteRequest request) {
+        Asserts.isNotNull(request);
+        return new TokenDelete()
+                .setClientId(securityHelper.getCurrentUser().getId())
+                .setAppTitle(request.getAppTitle())
+                .setTokens(request.getTokens());
     }
 
     private List<AccessRights> convertToAccessRights(String value) {

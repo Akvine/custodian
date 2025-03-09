@@ -6,12 +6,22 @@ import org.springframework.data.repository.query.Param;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public interface AccessTokenRepository extends JpaRepository<AccessTokenEntity, Long> {
     @Query("from AccessTokenEntity ate join app atep where atep.id = :appId")
     Optional<AccessTokenEntity> findByAppId(@Param("appId") long appId);
+
+    @Query("from AccessTokenEntity ate join ate.app atep " +
+            "where atep.deleted = false " +
+            "and " +
+            "atep.title = :appTitle " +
+            "and " +
+            "ate.token in :tokens")
+    List<AccessTokenEntity> findByAppTitleAndTokens(@Param("appTitle") String appTitle,
+                                                    @Param("tokens") Collection<String> tokens);
 
     @Query("select new ru.akvine.custodian.core.repositories.projections.AccessTokenProjection(atep.title, ate.token, ate.expiredAt) " +
             "from AccessTokenEntity ate join app atep where atep.id in :ids and " +

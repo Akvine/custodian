@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.common.Response;
+import ru.akvine.common.SuccessfulResponse;
 import ru.akvine.custodian.admin.controllers.rest.converters.AccessTokenConverter;
+import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenDeleteRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.token.TokenGenerateRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.AccessTokenControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
@@ -14,6 +16,7 @@ import ru.akvine.custodian.admin.controllers.rest.validators.AccessTokenValidato
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 import ru.akvine.custodian.core.services.AccessTokenService;
 import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 
 import java.util.List;
@@ -38,5 +41,12 @@ public class AccessTokenController implements AccessTokenControllerMeta {
     public Response list(HttpServletRequest request) {
         List<AccessTokenProjection> tokens = accessTokenService.list(securityHelper.getCurrentUser().getId());
         return accessTokenConverter.convertToTokenListResponse(tokens);
+    }
+
+    @Override
+    public Response delete(@RequestBody @Valid TokenDeleteRequest request) {
+        TokenDelete tokenDelete = accessTokenConverter.convertToTokenDelete(request);
+        accessTokenService.delete(tokenDelete);
+        return new SuccessfulResponse();
     }
 }
