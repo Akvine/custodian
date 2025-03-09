@@ -40,6 +40,7 @@ public class AppController implements AppControllerMeta {
     public Response create(@RequestBody @Valid AppCreateRequest request) {
         AppCreate appCreate = appConverter.convertToAppCreate(request);
         AppBean createdAppBean = appService.create(appCreate);
+        // TODO: убрать AppCreateResponse-класс и использовать AppListResponse как в update-эндпоинте
         return appConverter.convertToAppCreateResponse(createdAppBean);
     }
 

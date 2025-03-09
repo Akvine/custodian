@@ -8,9 +8,7 @@ import ru.akvine.custodian.admin.controllers.rest.parsers.FilePropertiesParser;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.utils.StringHelper;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
-import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
-import ru.akvine.custodian.core.services.dto.property.PropertyImport;
-import ru.akvine.custodian.core.services.dto.property.PropertyList;
+import ru.akvine.custodian.core.services.dto.property.*;
 import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.List;
@@ -46,6 +44,28 @@ public class PropertyConverter {
                 .setAppTitle(request.getAppTitle())
                 .setProfilesAndKeys(request.getKeys())
                 .setProfiles(request.getProfiles());
+    }
+
+    public PropertyUpdate convertToPropertyUpdate(PropertyUpdateRequest request) {
+        Asserts.isNotNull(request);
+        return new PropertyUpdate()
+                .setClientId(securityHelper.getCurrentUser().getId())
+                .setKey(request.getKey())
+                .setProfile(request.getProfile())
+                .setAppTitle(request.getAppTitle())
+                .setNewKey(request.getNewKey())
+                .setNewValue(request.getNewValue())
+                .setNewProfile(request.getNewProfile())
+                .setNewDescription(request.getNewDescription());
+
+    }
+
+    public PropertyDelete convertToPropertyDelete(PropertyDeleteRequest request) {
+        Asserts.isNotNull(request);
+        return new PropertyDelete()
+                .setClientId(securityHelper.getCurrentUser().getId())
+                .setAppTitle(request.getAppTitle())
+                .setProfilesWithKeys(request.getProfilesWithKeys());
     }
 
     public PropertyListResponse convertToPropertyListResponse(List<PropertyBean> properties) {

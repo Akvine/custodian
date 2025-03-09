@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.akvine.custodian.core.exceptions.app.AppNotFoundException;
 import ru.akvine.custodian.core.exceptions.property.PropertyAlreadyExistsException;
 import ru.akvine.custodian.core.repositories.AppRepository;
+import ru.akvine.custodian.core.repositories.PropertyRepository;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
 import ru.akvine.custodian.core.services.domain.AppBean;
@@ -16,7 +17,6 @@ import ru.akvine.custodian.core.services.dto.app.AppUpdate;
 import ru.akvine.custodian.core.utils.Asserts;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class AppService {
+    private final PropertyRepository propertyRepository;
     private final AppRepository appRepository;
     private final ClientService clientService;
 
@@ -71,8 +72,11 @@ public class AppService {
     public void delete(AppDelete appDelete) {
         Asserts.isNotNull(appDelete, "appDelete is null");
 
-        // TODO: нужно удалять также все настройки и токены, что относятся к приложению
-        AppEntity appToDelete = verifyExistsByTitle(appDelete.getAppTitle(), appDelete.getClientId());
+        String appTitle = appDelete.getAppTitle();
+        AppEntity appToDelete = verifyExistsByTitle(appTitle, appDelete.getClientId());
+
+        propertyRepository.delete(appTitle, ZonedDateTime.now());
+
         appToDelete.setDeleted(true);
         appToDelete.setDeletedDate(ZonedDateTime.now());
 

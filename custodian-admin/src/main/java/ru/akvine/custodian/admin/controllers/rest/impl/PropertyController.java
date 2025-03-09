@@ -10,14 +10,14 @@ import ru.akvine.common.Response;
 import ru.akvine.common.SuccessfulResponse;
 import ru.akvine.custodian.admin.controllers.rest.converters.PropertyConverter;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyCreateRequest;
+import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyDeleteRequest;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyListRequest;
+import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyUpdateRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.PropertyControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.validators.PropertyValidator;
 import ru.akvine.custodian.core.services.PropertyService;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
-import ru.akvine.custodian.core.services.dto.property.PropertyCreate;
-import ru.akvine.custodian.core.services.dto.property.PropertyImport;
-import ru.akvine.custodian.core.services.dto.property.PropertyList;
+import ru.akvine.custodian.core.services.dto.property.*;
 
 import java.util.List;
 
@@ -43,12 +43,26 @@ public class PropertyController implements PropertyControllerMeta {
     }
 
     @Override
+    public Response update(@RequestBody @Valid PropertyUpdateRequest request) {
+        PropertyUpdate propertyUpdate = propertyConverter.convertToPropertyUpdate(request);
+        PropertyBean updatedProperty = propertyService.updateProperty(propertyUpdate);
+        return propertyConverter.convertToPropertyListResponse(List.of(updatedProperty));
+    }
+
+    @Override
     public Response importProperties(@RequestParam("file") MultipartFile file,
                                      @RequestParam("profile") String profile,
                                      @RequestParam("appTitle") String appTitle) {
         propertyValidator.verifyImportProperties(file, appTitle, profile);
         PropertyImport propertyImport = propertyConverter.convertToPropertyImport(file, appTitle, profile);
         propertyService.importProperties(propertyImport);
+        return new SuccessfulResponse();
+    }
+
+    @Override
+    public Response delete(@RequestBody @Valid PropertyDeleteRequest request) {
+        PropertyDelete propertyDelete = propertyConverter.convertToPropertyDelete(request);
+        propertyService.delete(propertyDelete);
         return new SuccessfulResponse();
     }
 }
