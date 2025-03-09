@@ -3,32 +3,32 @@ package ru.akvine.custodian.core.services.domain;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.custodian.core.repositories.entities.PropertyEntity;
-import ru.akvine.custodian.core.services.domain.base.SoftBean;
+import ru.akvine.custodian.core.services.domain.base.SoftModel;
 
 import javax.annotation.Nullable;
 
 @Data
 @Accessors(chain = true)
-public class PropertyBean extends SoftBean {
+public class PropertyModel extends SoftModel {
     private Long id;
     private String profile;
     private String key;
     private String value;
     @Nullable
     private String description;
-    private AppBean app;
+    private AppModel app;
     @Nullable
     private Character mask;
     @Nullable
     private Integer maskingRadius;
 
-    public PropertyBean(PropertyEntity property) {
+    public PropertyModel(PropertyEntity property) {
         this.id = property.getId();
         this.profile = property.getProfile();
         this.key = property.getKey();
         this.value = property.getValue();
         this.description = property.getDescription();
-        this.app = new AppBean(property.getApp());
+        this.app = new AppModel(property.getApp());
         this.mask = property.getMask();
         this.maskingRadius = property.getMaskingRadius();
 

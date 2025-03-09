@@ -14,7 +14,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.app.AppUpdateRequest;
 import ru.akvine.custodian.admin.controllers.rest.meta.AppControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.services.AppService;
-import ru.akvine.custodian.core.services.domain.AppBean;
+import ru.akvine.custodian.core.services.domain.AppModel;
 import ru.akvine.custodian.core.services.dto.app.AppCreate;
 import ru.akvine.custodian.core.services.dto.app.AppDelete;
 import ru.akvine.custodian.core.services.dto.app.AppUpdate;
@@ -32,14 +32,14 @@ public class AppController implements AppControllerMeta {
     @Override
     public Response list() {
         long clientId = securityHelper.getCurrentUser().getId();
-        List<AppBean> apps = appService.list(clientId);
+        List<AppModel> apps = appService.list(clientId);
         return appConverter.convertToAppListResponse(apps);
     }
 
     @Override
     public Response create(@RequestBody @Valid AppCreateRequest request) {
         AppCreate appCreate = appConverter.convertToAppCreate(request);
-        AppBean createdAppBean = appService.create(appCreate);
+        AppModel createdAppBean = appService.create(appCreate);
         // TODO: убрать AppCreateResponse-класс и использовать AppListResponse как в update-эндпоинте
         return appConverter.convertToAppCreateResponse(createdAppBean);
     }
@@ -47,7 +47,7 @@ public class AppController implements AppControllerMeta {
     @Override
     public Response update(@RequestBody @Valid AppUpdateRequest request) {
         AppUpdate appUpdate = appConverter.convertToAppUpdate(request);
-        AppBean updatedApp = appService.update(appUpdate);
+        AppModel updatedApp = appService.update(appUpdate);
         return appConverter.convertToAppListResponse(List.of(updatedApp));
     }
 

@@ -13,7 +13,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.access_restore.Ac
 import ru.akvine.custodian.admin.controllers.rest.meta.security.AccessRestoreControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.security.AccessRestoreValidator;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
 import ru.akvine.custodian.core.services.security.AccessRestoreActionService;
@@ -54,7 +54,7 @@ public class AccessRestoreController implements AccessRestoreControllerMeta {
     public Response finish(@Valid AccessRestoreFinishRequest request, HttpServletRequest httpServletRequest) {
         accessRestoreValidator.verifyAccessRestoreFinish(request);
         AccessRestoreActionRequest actionRequest = accessRestoreConverter.convertToAccessRestoreActionRequest(request, httpServletRequest);
-        ClientBean clientBean = accessRestoreActionService.finishAccessRestore(actionRequest);
+        ClientModel clientBean = accessRestoreActionService.finishAccessRestore(actionRequest);
         securityHelper.authenticate(clientBean, httpServletRequest);
         return new SuccessfulResponse();
     }

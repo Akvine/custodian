@@ -15,7 +15,7 @@ import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.AccessTokenValidator;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
 import ru.akvine.custodian.core.services.AccessTokenService;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
 import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 
@@ -33,7 +33,7 @@ public class AccessTokenController implements AccessTokenControllerMeta {
     public Response generate(@RequestBody @Valid TokenGenerateRequest request) {
         accessTokenValidator.verifyTokenGenerateRequest(request);
         TokenGenerate tokenGenerate = accessTokenConverter.convertToTokenGenerate(request);
-        AccessTokenBean accessTokenBean = accessTokenService.generate(tokenGenerate);
+        AccessTokenModel accessTokenBean = accessTokenService.generate(tokenGenerate);
         return accessTokenConverter.convertToTokenGenerateResponse(accessTokenBean);
     }
 

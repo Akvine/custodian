@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 
 @Service
 @Slf4j
@@ -14,7 +14,7 @@ import ru.akvine.custodian.core.services.domain.ClientBean;
 public class PasswordService {
     private final PasswordEncoder passwordEncoder;
 
-    public boolean isValidPassword(ClientBean clientBean, String password) {
+    public boolean isValidPassword(ClientModel clientBean, String password) {
         if (StringUtils.isBlank(password)) {
             return false;
         }

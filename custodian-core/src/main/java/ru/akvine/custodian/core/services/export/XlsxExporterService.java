@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import ru.akvine.custodian.core.enums.ExportFileType;
 import ru.akvine.custodian.core.exceptions.property.PropertyExportException;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.core.utils.POIUtils;
 
@@ -22,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class XlsxExporterService implements ExporterService {
     @Override
-    public byte[] export(Map<String, List<PropertyBean>> profilesWithProperties) {
+    public byte[] export(Map<String, List<PropertyModel>> profilesWithProperties) {
         Asserts.isNotNull(profilesWithProperties, "profilesWithProperties is null");
 
         try (Workbook workbook = new XSSFWorkbook()) {
@@ -31,7 +31,7 @@ public class XlsxExporterService implements ExporterService {
                 Sheet sheet = workbook.createSheet(profile);
                 createHeaders(sheet);
 
-                List<PropertyBean> properties = profilesWithProperties.get(profile);
+                List<PropertyModel> properties = profilesWithProperties.get(profile);
                 for (int i = 0; i < properties.size(); ++i) {
                     Row row = sheet.createRow(i + 1);
 

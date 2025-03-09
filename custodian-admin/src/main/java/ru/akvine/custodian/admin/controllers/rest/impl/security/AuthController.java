@@ -14,7 +14,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.auth.AuthNewOtpRe
 import ru.akvine.custodian.admin.controllers.rest.meta.security.AuthControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.security.AuthValidator;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
 import ru.akvine.custodian.core.services.security.AuthActionService;
@@ -46,7 +46,7 @@ public class AuthController implements AuthControllerMeta {
     public Response finish(@Valid @RequestBody AuthFinishRequest request, HttpServletRequest httpServletRequest) {
         authValidator.verifyAuthLogin(request);
         AuthActionRequest authActionRequest = authConverter.convertToAuthActionRequest(request, httpServletRequest);
-        ClientBean clientBean = authActionService.finishAuth(authActionRequest);
+        ClientModel clientBean = authActionService.finishAuth(authActionRequest);
         securityHelper.authenticate(clientBean, httpServletRequest);
         return new SuccessfulResponse();
     }

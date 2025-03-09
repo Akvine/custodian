@@ -13,7 +13,7 @@ import ru.akvine.custodian.core.repositories.entities.security.OtpInfo;
 import ru.akvine.custodian.core.repositories.security.AccessRestoreActionRepository;
 import ru.akvine.custodian.core.repositories.security.ActionRepository;
 import ru.akvine.custodian.core.services.ClientService;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionRequest;
 import ru.akvine.custodian.core.services.dto.security.access_restore.AccessRestoreActionResult;
 import ru.akvine.custodian.core.utils.Asserts;
@@ -138,7 +138,7 @@ public class AccessRestoreActionService extends OtpActionService<AccessRestoreAc
         return buildActionInfo(accessRestoreActionEntity);
     }
 
-    public ClientBean finishAccessRestore(AccessRestoreActionRequest actionRequest) {
+    public ClientModel finishAccessRestore(AccessRestoreActionRequest actionRequest) {
         Asserts.isNotNull(actionRequest, "actionRestoreRequest is null");
 
         String login = actionRequest.getLogin();

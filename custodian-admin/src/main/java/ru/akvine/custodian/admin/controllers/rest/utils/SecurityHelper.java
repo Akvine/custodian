@@ -10,14 +10,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.akvine.custodian.admin.controllers.rest.config.security.ClientAuthentication;
 import ru.akvine.custodian.core.exceptions.security.NoSessionException;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.utils.Asserts;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityHelper {
 
-    public void authenticate(ClientBean clientBean, HttpServletRequest request) {
+    public void authenticate(ClientModel clientBean, HttpServletRequest request) {
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(new ClientAuthentication(
                 clientBean.getId(),

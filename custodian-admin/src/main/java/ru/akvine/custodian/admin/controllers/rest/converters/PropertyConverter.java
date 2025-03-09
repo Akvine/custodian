@@ -10,7 +10,7 @@ import ru.akvine.custodian.admin.controllers.rest.parsers.FilePropertiesParser;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.utils.StringHelper;
 import ru.akvine.custodian.core.enums.ExportFileType;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.services.dto.property.*;
 import ru.akvine.custodian.core.utils.Asserts;
 
@@ -39,7 +39,7 @@ public class PropertyConverter {
                 .setMaskingRadius(request.getMaskingInfo() != null ? request.getMaskingInfo().getRadius() : null);
     }
 
-    public PropertyCreateResponse convertToPropertyCreateResponse(PropertyBean propertyBean) {
+    public PropertyCreateResponse convertToPropertyCreateResponse(PropertyModel propertyBean) {
         Asserts.isNotNull(propertyBean, "propertyBean is null");
         return new PropertyCreateResponse().setProperty(buildPropertyDto(propertyBean));
     }
@@ -75,7 +75,7 @@ public class PropertyConverter {
                 .setProfilesWithKeys(request.getProfilesWithKeys());
     }
 
-    public PropertyListResponse convertToPropertyListResponse(List<PropertyBean> properties) {
+    public PropertyListResponse convertToPropertyListResponse(List<PropertyModel> properties) {
         Asserts.isNotNull(properties, "properties is null");
         return new PropertyListResponse()
                 .setCount(properties.size())
@@ -122,7 +122,7 @@ public class PropertyConverter {
                 .body(file);
     }
 
-    private PropertyDto buildPropertyDto(PropertyBean propertyBean) {
+    private PropertyDto buildPropertyDto(PropertyModel propertyBean) {
         String value;
         if (propertyBean.getMask() != null && propertyBean.getMaskingRadius() != null) {
             value = StringHelper.replaceAroundMiddle(

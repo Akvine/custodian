@@ -7,7 +7,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.token.*;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
 import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 import ru.akvine.custodian.core.utils.Asserts;
@@ -46,7 +46,7 @@ public class AccessTokenConverter {
         return Arrays.stream(value.split(",")).map(AccessRights::safeFrom).toList();
     }
 
-    public TokenGenerateResponse convertToTokenGenerateResponse(AccessTokenBean accessTokenBean) {
+    public TokenGenerateResponse convertToTokenGenerateResponse(AccessTokenModel accessTokenBean) {
         Asserts.isNotNull(accessTokenBean, "AccessTokenBean is null");
         return new TokenGenerateResponse().setToken(accessTokenBean.getToken());
     }

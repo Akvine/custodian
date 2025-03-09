@@ -3,24 +3,24 @@ package ru.akvine.custodian.core.services.domain;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
-import ru.akvine.custodian.core.services.domain.base.SoftBean;
+import ru.akvine.custodian.core.services.domain.base.SoftModel;
 
 import javax.annotation.Nullable;
 
 @Data
 @Accessors(chain = true)
-public class AppBean extends SoftBean {
+public class AppModel extends SoftModel {
     private Long id;
     private String title;
     @Nullable
     private String description;
-    private ClientBean client;
+    private ClientModel client;
 
-    public AppBean(AppEntity app) {
+    public AppModel(AppEntity app) {
         this.id = app.getId();
         this.title = app.getTitle();
         this.description = app.getDescription();
-        this.client = new ClientBean(app.getClient());
+        this.client = new ClientModel(app.getClient());
 
         this.createdDate = client.getCreatedDate();
         this.updatedDate = client.getUpdatedDate();

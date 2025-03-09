@@ -2,8 +2,8 @@ package ru.akvine.custodian.integration.rest.converters;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.services.dto.property.PropertyList;
 import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.integration.rest.dto.ApiPropertyDto;
@@ -15,21 +15,21 @@ import java.util.Set;
 
 @Component
 public class ApiPropertyConverter {
-    public PropertyList convertToPropertyList(ApiPropertyListRequest request, AccessTokenBean accessTokenBean) {
+    public PropertyList convertToPropertyList(ApiPropertyListRequest request, AccessTokenModel accessTokenBean) {
         return new PropertyList()
                 .setClientId(accessTokenBean.getApp().getClient().getId())
                 .setAppTitle(accessTokenBean.getApp().getTitle())
                 .setProfiles(StringUtils.isNotBlank(request.getProfile()) ? Set.of(request.getProfile()) : null);
     }
 
-    public ApiPropertyListResponse convertToPropertyListResponse(List<PropertyBean> properties) {
+    public ApiPropertyListResponse convertToPropertyListResponse(List<PropertyModel> properties) {
         Asserts.isNotNull(properties, "properties is null");
         return new ApiPropertyListResponse()
                 .setCount(properties.size())
                 .setProperties(properties.stream().map(this::buildPropertyDto).toList());
     }
 
-    private ApiPropertyDto buildPropertyDto(PropertyBean propertyBean) {
+    private ApiPropertyDto buildPropertyDto(PropertyModel propertyBean) {
         return new ApiPropertyDto()
                 .setKey(propertyBean.getKey())
                 .setValue(propertyBean.getValue())

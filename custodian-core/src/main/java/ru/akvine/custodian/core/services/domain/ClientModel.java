@@ -5,11 +5,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
-import ru.akvine.custodian.core.services.domain.base.SoftBean;
+import ru.akvine.custodian.core.services.domain.base.SoftModel;
 
 @Data
 @Accessors(chain = true)
-public class ClientBean extends SoftBean {
+public class ClientModel extends SoftModel {
     private Long id;
     private String uuid;
     private String email;
@@ -24,7 +24,7 @@ public class ClientBean extends SoftBean {
     @ToString.Exclude
     private String hash;
 
-    public ClientBean(ClientEntity client) {
+    public ClientModel(ClientEntity client) {
         this.id = client.getId();
         this.uuid = client.getUuid();
         this.email = client.getEmail();

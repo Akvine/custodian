@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.common.Response;
 import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.services.PropertyService;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.services.dto.property.PropertyList;
 import ru.akvine.custodian.integration.rest.converters.ApiPropertyConverter;
 import ru.akvine.custodian.integration.rest.dto.ApiPropertyListRequest;
@@ -27,10 +27,10 @@ public class ApiPropertyController implements ApiPropertyControllerMeta {
     @Override
     public Response list(@RequestHeader("authorization") String token,
                          @Valid ApiPropertyListRequest request) {
-        AccessTokenBean accessTokenBean = securityService.check(token);
+        AccessTokenModel accessTokenBean = securityService.check(token);
         securityService.checkAccess(accessTokenBean, AccessRights.RETRIEVE);
         PropertyList propertyList = apiPropertyConverter.convertToPropertyList(request, accessTokenBean);
-        List<PropertyBean> properties = propertyService.list(propertyList);
+        List<PropertyModel> properties = propertyService.list(propertyList);
         return apiPropertyConverter.convertToPropertyListResponse(properties);
     }
 }

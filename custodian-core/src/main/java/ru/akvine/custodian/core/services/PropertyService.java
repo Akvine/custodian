@@ -13,7 +13,7 @@ import ru.akvine.custodian.core.managers.ExportersManagers;
 import ru.akvine.custodian.core.repositories.PropertyRepository;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.entities.PropertyEntity;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.services.dto.property.*;
 import ru.akvine.custodian.core.utils.Asserts;
 
@@ -29,7 +29,7 @@ public class PropertyService {
     private final AppService appService;
     private final ExportersManagers exportersManagers;
 
-    public PropertyBean create(PropertyCreate propertyCreate) {
+    public PropertyModel create(PropertyCreate propertyCreate) {
         Asserts.isNotNull(propertyCreate, "propertyCreate is null");
         logger.debug("Create property by = [{}]", propertyCreate);
 
@@ -58,30 +58,30 @@ public class PropertyService {
                 .setApp(app)
                 .setMask(propertyCreate.getMask())
                 .setMaskingRadius(propertyCreate.getMaskingRadius());
-        PropertyBean savedProperty = new PropertyBean(propertyRepository.save(propertyEntity));
+        PropertyModel savedProperty = new PropertyModel(propertyRepository.save(propertyEntity));
         logger.debug("Successful create property = {}", savedProperty);
         return savedProperty;
     }
 
-    public List<PropertyBean> list(PropertyList propertyList) {
+    public List<PropertyModel> list(PropertyList propertyList) {
         Asserts.isNotNull(propertyList, "propertyList is null");
         logger.debug("List properties by = {}", propertyList);
 
         String appTitle = propertyList.getAppTitle();
         appService.verifyExistsByTitle(appTitle, propertyList.getClientId());
-        List<PropertyBean> properties;
+        List<PropertyModel> properties;
         if (CollectionUtils.isEmpty(propertyList.getProfiles()) &&
                 CollectionUtils.isEmpty(propertyList.getProfilesAndKeys())) {
             properties = propertyRepository
                     .findByAppTitle(appTitle)
                     .stream()
-                    .map(PropertyBean::new)
+                    .map(PropertyModel::new)
                     .toList();
         } else if (CollectionUtils.isEmpty(propertyList.getProfilesAndKeys())) {
             properties = propertyRepository
                     .findByAppTitleAndProfiles(appTitle, propertyList.getProfiles())
                     .stream()
-                    .map(PropertyBean::new)
+                    .map(PropertyModel::new)
                     .toList();
         } else {
             properties = new ArrayList<>();
@@ -89,14 +89,14 @@ public class PropertyService {
                     propertyRepository
                             .findByAppTitleAndProfileAndKeys(appTitle, profile, keys)
                             .stream()
-                            .map(PropertyBean::new)
+                            .map(PropertyModel::new)
                             .toList()));
         }
 
         return properties;
     }
 
-    public PropertyBean updateProperty(PropertyUpdate propertyUpdate) {
+    public PropertyModel updateProperty(PropertyUpdate propertyUpdate) {
         Asserts.isNotNull(propertyUpdate);
 
         String appTitle = propertyUpdate.getAppTitle();
@@ -162,7 +162,7 @@ public class PropertyService {
             propertyToUpdate.setMaskingRadius(propertyUpdate.getNewRadiusMask());
         }
 
-        return new PropertyBean(propertyRepository.save(propertyToUpdate));
+        return new PropertyModel(propertyRepository.save(propertyToUpdate));
     }
 
     public boolean importProperties(PropertyImport propertyImport) {
@@ -199,12 +199,12 @@ public class PropertyService {
             uniqueProfiles = propertyExport.getProfiles();
         }
 
-        Map<String, List<PropertyBean>> profilesWithProperties = new HashMap<>();
+        Map<String, List<PropertyModel>> profilesWithProperties = new HashMap<>();
         for (String profile : uniqueProfiles) {
-            List<PropertyBean> properties = propertyRepository
+            List<PropertyModel> properties = propertyRepository
                     .findByAppTitleAndProfile(appTitle, profile)
                     .stream()
-                    .map(PropertyBean::new)
+                    .map(PropertyModel::new)
                     .toList();
             profilesWithProperties.put(profile, properties);
         }

@@ -11,8 +11,8 @@ import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.projections.AccessTokenProjection;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
-import ru.akvine.custodian.core.services.domain.AppBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
+import ru.akvine.custodian.core.services.domain.AppModel;
 import ru.akvine.custodian.core.services.dto.token.TokenDelete;
 import ru.akvine.custodian.core.services.dto.token.TokenGenerate;
 import ru.akvine.custodian.core.utils.Asserts;
@@ -32,7 +32,7 @@ public class AccessTokenService {
     @Value("${access.token.max.count.per.app}")
     private int maxCountPerApp;
 
-    public AccessTokenBean generate(TokenGenerate tokenGenerate) {
+    public AccessTokenModel generate(TokenGenerate tokenGenerate) {
         Asserts.isNotNull(tokenGenerate, "TokenGenerate is null");
         logger.debug("Generate new token for app with title = {} for client with id = {}",
                 tokenGenerate.getAppTitle(), tokenGenerate.getClientId());
@@ -63,14 +63,14 @@ public class AccessTokenService {
                         .stream().map(AccessRights::toString).toList()));
 
         logger.debug("Access token was successful generated");
-        return new AccessTokenBean(accessTokenRepository.save(generatedToken));
+        return new AccessTokenModel(accessTokenRepository.save(generatedToken));
     }
 
     public List<AccessTokenProjection> list(long clientId) {
         logger.debug("List all tokens for client with id = {}", clientId);
 
-        List<AppBean> apps = appService.list(clientId);
-        List<Long> appIds = apps.stream().map(AppBean::getId).toList();
+        List<AppModel> apps = appService.list(clientId);
+        List<Long> appIds = apps.stream().map(AppModel::getId).toList();
 
         return accessTokenRepository
                 .findByAppIds(appIds);

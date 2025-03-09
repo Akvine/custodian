@@ -11,7 +11,7 @@ import ru.akvine.custodian.admin.controllers.rest.dto.security.registration.*;
 import ru.akvine.custodian.admin.controllers.rest.meta.security.RegistrationControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.validators.security.RegistrationValidator;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionRequest;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionResult;
 import ru.akvine.custodian.core.services.security.RegistrationActionService;
@@ -59,7 +59,7 @@ public class RegistrationController implements RegistrationControllerMeta {
     public Response finish(@Valid RegistrationFinishRequest request, HttpServletRequest httpServletRequest) {
         registrationValidator.verifyRegistrationFinish(request);
         RegistrationActionRequest registrationActionRequest = registrationConverter.convertToRegistrationActionRequest(request, httpServletRequest);
-        ClientBean clientBean = registrationActionService.finishRegistration(registrationActionRequest);
+        ClientModel clientBean = registrationActionService.finishRegistration(registrationActionRequest);
         securityHelper.authenticate(clientBean, httpServletRequest);
         return new SuccessfulResponse();
     }

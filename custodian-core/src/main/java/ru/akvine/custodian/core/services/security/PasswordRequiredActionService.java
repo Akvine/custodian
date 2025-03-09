@@ -8,7 +8,7 @@ import ru.akvine.custodian.core.repositories.entities.security.AccountPasswordab
 import ru.akvine.custodian.core.repositories.entities.security.OneTimePasswordable;
 import ru.akvine.custodian.core.repositories.entities.security.OtpInfo;
 import ru.akvine.custodian.core.services.ClientService;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.OtpCreateNewAction;
 import ru.akvine.custodian.core.utils.Asserts;
 
@@ -20,7 +20,7 @@ public abstract class PasswordRequiredActionService <T extends AccountPasswordab
     @Autowired
     protected PasswordService passwordService;
 
-    protected boolean isValidPassword(ClientBean clientBean, String password) {
+    protected boolean isValidPassword(ClientModel clientBean, String password) {
         Asserts.isNotNull(clientBean, "clientBean is null");
         Asserts.isNotNull(password, "password is null");
         return passwordService.isValidPassword(clientBean, password);

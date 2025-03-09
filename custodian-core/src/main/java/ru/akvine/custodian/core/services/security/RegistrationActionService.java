@@ -14,7 +14,7 @@ import ru.akvine.custodian.core.repositories.entities.security.RegistrationActio
 import ru.akvine.custodian.core.repositories.security.ActionRepository;
 import ru.akvine.custodian.core.repositories.security.RegistrationActionRepository;
 import ru.akvine.custodian.core.services.ClientService;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.client.ClientCreate;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionRequest;
 import ru.akvine.custodian.core.services.dto.security.registration.RegistrationActionResult;
@@ -110,7 +110,7 @@ public class RegistrationActionService extends OtpActionService<RegistrationActi
             return generateNewOtp(request.getEmail());
         }
 
-        public ClientBean finishRegistration(RegistrationActionRequest request) {
+        public ClientModel finishRegistration(RegistrationActionRequest request) {
             Asserts.isNotNull(request, "registrationActionRequest is null");
 
             String login = request.getEmail();

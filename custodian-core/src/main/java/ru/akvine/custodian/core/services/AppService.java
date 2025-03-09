@@ -10,7 +10,7 @@ import ru.akvine.custodian.core.repositories.AppRepository;
 import ru.akvine.custodian.core.repositories.PropertyRepository;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.entities.ClientEntity;
-import ru.akvine.custodian.core.services.domain.AppBean;
+import ru.akvine.custodian.core.services.domain.AppModel;
 import ru.akvine.custodian.core.services.dto.app.AppCreate;
 import ru.akvine.custodian.core.services.dto.app.AppDelete;
 import ru.akvine.custodian.core.services.dto.app.AppUpdate;
@@ -28,7 +28,7 @@ public class AppService {
     private final AppRepository appRepository;
     private final ClientService clientService;
 
-    public AppBean create(AppCreate appCreate) {
+    public AppModel create(AppCreate appCreate) {
         Asserts.isNotNull(appCreate, "appCreate is null");
         logger.debug("App create by = {}", appCreate);
 
@@ -47,12 +47,12 @@ public class AppService {
                 .setTitle(appCreate.getTitle())
                 .setDescription(appCreate.getDescription());
 
-        AppBean savedApp = new AppBean(appRepository.save(app));
+        AppModel savedApp = new AppModel(appRepository.save(app));
         logger.debug("Successful save app = {}", savedApp);
         return savedApp;
     }
 
-    public AppBean update(AppUpdate appUpdate) {
+    public AppModel update(AppUpdate appUpdate) {
         Asserts.isNotNull(appUpdate);
 
         AppEntity appToUpdate = verifyExistsByTitle(appUpdate.getAppTitle(), appUpdate.getClientId());
@@ -66,7 +66,7 @@ public class AppService {
             appToUpdate.setDescription(appUpdate.getNewDescription());
         }
 
-        return new AppBean(appRepository.save(appToUpdate));
+        return new AppModel(appRepository.save(appToUpdate));
     }
 
     public void delete(AppDelete appDelete) {
@@ -83,10 +83,10 @@ public class AppService {
         appRepository.save(appToDelete);
     }
 
-    public List<AppBean> list(long clientId) {
+    public List<AppModel> list(long clientId) {
         return listEntities(clientId)
                 .stream()
-                .map(AppBean::new)
+                .map(AppModel::new)
                 .toList();
     }
 

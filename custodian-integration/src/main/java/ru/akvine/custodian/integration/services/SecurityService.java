@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.akvine.custodian.core.enums.AccessRights;
 import ru.akvine.custodian.core.repositories.AccessTokenRepository;
 import ru.akvine.custodian.core.repositories.entities.AccessTokenEntity;
-import ru.akvine.custodian.core.services.domain.AccessTokenBean;
+import ru.akvine.custodian.core.services.domain.AccessTokenModel;
 import ru.akvine.custodian.core.utils.Asserts;
 import ru.akvine.custodian.integration.exceptions.AuthException;
 
@@ -19,7 +19,7 @@ public class SecurityService {
 
     private final static String BEARER_TOKEN_PREFIX = "Bearer ";
 
-    public AccessTokenBean check(String authorizationToken) {
+    public AccessTokenModel check(String authorizationToken) {
         Asserts.isNotNull(authorizationToken, "authorizationToken is null");
 
         String extractedToken = extractToken(authorizationToken);
@@ -28,10 +28,10 @@ public class SecurityService {
             throw new AuthException("Access token is invalid");
         }
 
-        return new AccessTokenBean(accessTokenEntityOptional.get());
+        return new AccessTokenModel(accessTokenEntityOptional.get());
     }
 
-    public void checkAccess(AccessTokenBean accessToken, AccessRights accessRights) {
+    public void checkAccess(AccessTokenModel accessToken, AccessRights accessRights) {
         Asserts.isNotNull(accessToken, "accessToken is null");
         Asserts.isNotNull(accessRights, "accessRights is null");
 

@@ -15,7 +15,7 @@ import ru.akvine.custodian.admin.controllers.rest.meta.PropertyControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.validators.PropertyValidator;
 import ru.akvine.custodian.core.services.dto.property.PropertyExport;
 import ru.akvine.custodian.core.services.PropertyService;
-import ru.akvine.custodian.core.services.domain.PropertyBean;
+import ru.akvine.custodian.core.services.domain.PropertyModel;
 import ru.akvine.custodian.core.services.dto.property.*;
 
 import java.util.List;
@@ -30,21 +30,21 @@ public class PropertyController implements PropertyControllerMeta {
     @Override
     public Response create(@RequestBody @Valid PropertyCreateRequest request) {
         PropertyCreate propertyCreate = propertyConverter.convertToPropertyCreate(request);
-        PropertyBean propertyBean = propertyService.create(propertyCreate);
+        PropertyModel propertyBean = propertyService.create(propertyCreate);
         return propertyConverter.convertToPropertyCreateResponse(propertyBean);
     }
 
     @Override
     public Response list(@RequestBody @Valid PropertyListRequest propertyListRequest) {
         PropertyList propertyList = propertyConverter.convertToPropertyList(propertyListRequest);
-        List<PropertyBean> properties = propertyService.list(propertyList);
+        List<PropertyModel> properties = propertyService.list(propertyList);
         return propertyConverter.convertToPropertyListResponse(properties);
     }
 
     @Override
     public Response update(@RequestBody @Valid PropertyUpdateRequest request) {
         PropertyUpdate propertyUpdate = propertyConverter.convertToPropertyUpdate(request);
-        PropertyBean updatedProperty = propertyService.updateProperty(propertyUpdate);
+        PropertyModel updatedProperty = propertyService.updateProperty(propertyUpdate);
         return propertyConverter.convertToPropertyListResponse(List.of(updatedProperty));
     }
 

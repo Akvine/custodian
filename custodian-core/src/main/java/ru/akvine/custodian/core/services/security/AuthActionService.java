@@ -11,7 +11,7 @@ import ru.akvine.custodian.core.repositories.entities.security.AuthActionEntity;
 import ru.akvine.custodian.core.repositories.entities.security.OtpActionEntity;
 import ru.akvine.custodian.core.repositories.security.ActionRepository;
 import ru.akvine.custodian.core.repositories.security.AuthActionRepository;
-import ru.akvine.custodian.core.services.domain.ClientBean;
+import ru.akvine.custodian.core.services.domain.ClientModel;
 import ru.akvine.custodian.core.services.dto.security.OtpCreateNewAction;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionRequest;
 import ru.akvine.custodian.core.services.dto.security.auth.AuthActionResult;
@@ -42,7 +42,7 @@ public class AuthActionService extends PasswordRequiredActionService<AuthActionE
         String sessionId = request.getSessionId();
 
         verifyNotBlocked(login);
-        ClientBean clientBean = clientService.getByEmail(login);
+        ClientModel clientBean = clientService.getByEmail(login);
         final boolean isPasswordValid = isValidPassword(clientBean, password);
 
         AuthActionEntity authActionEntity = lockHelper.doWithLock(getLock(login), () -> {
@@ -82,7 +82,7 @@ public class AuthActionService extends PasswordRequiredActionService<AuthActionE
         return buildActionInfo(authActionEntity);
     }
 
-    public ClientBean finishAuth(AuthActionRequest request) {
+    public ClientModel finishAuth(AuthActionRequest request) {
         Asserts.isNotNull(request, "authActionRequest is null");
 
         String login = request.getEmail();
@@ -90,7 +90,7 @@ public class AuthActionService extends PasswordRequiredActionService<AuthActionE
         String sessionId = request.getSessionId();
 
         verifyNotBlocked(login);
-        ClientBean clientBean = clientService.getByEmail(login);
+        ClientModel clientBean = clientService.getByEmail(login);
 
         return lockHelper.doWithLock((getLock(login)), () -> {
             AuthActionEntity authActionEntity = checkOtpInput(login, otp, sessionId);
