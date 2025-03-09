@@ -1,13 +1,11 @@
 package ru.akvine.custodian.admin.controllers.rest.meta;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.common.Response;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyCreateRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyDeleteRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyListRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyUpdateRequest;
+import ru.akvine.custodian.admin.controllers.rest.dto.property.*;
 
 @RequestMapping(value = "/properties")
 public interface PropertyControllerMeta {
@@ -24,6 +22,9 @@ public interface PropertyControllerMeta {
     Response importProperties(@RequestParam("file") MultipartFile file,
                               @RequestParam("profile") String profile,
                               @RequestParam("appTitle") String appTitle);
+
+    @PostMapping(value = "/export")
+    ResponseEntity<?> exportProperties(@RequestBody @Valid PropertyExportRequest request);
 
     @DeleteMapping
     Response delete(@RequestBody @Valid PropertyDeleteRequest propertyDeleteRequest);

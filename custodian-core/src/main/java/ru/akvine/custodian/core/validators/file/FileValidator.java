@@ -1,7 +1,7 @@
 package ru.akvine.custodian.core.validators.file;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.akvine.custodian.core.enums.FileType;
+import ru.akvine.custodian.core.enums.ImportFileType;
 import ru.akvine.custodian.core.exceptions.CommonErrorCodes;
 import ru.akvine.custodian.core.exceptions.validation.ValidationException;
 
@@ -30,5 +30,5 @@ public abstract class FileValidator {
 
     public abstract void validate(MultipartFile file);
 
-    public abstract FileType getType();
+    public abstract ImportFileType getType();
 }

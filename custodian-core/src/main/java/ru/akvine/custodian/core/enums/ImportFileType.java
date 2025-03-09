@@ -1,5 +1,5 @@
 package ru.akvine.custodian.core.enums;
 
-public enum FileType {
+public enum ImportFileType {
     PROPERTIES
 }

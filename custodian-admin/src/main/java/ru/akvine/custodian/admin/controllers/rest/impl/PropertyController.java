@@ -2,6 +2,7 @@ package ru.akvine.custodian.admin.controllers.rest.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,12 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.common.Response;
 import ru.akvine.common.SuccessfulResponse;
 import ru.akvine.custodian.admin.controllers.rest.converters.PropertyConverter;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyCreateRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyDeleteRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyListRequest;
-import ru.akvine.custodian.admin.controllers.rest.dto.property.PropertyUpdateRequest;
+import ru.akvine.custodian.admin.controllers.rest.dto.property.*;
 import ru.akvine.custodian.admin.controllers.rest.meta.PropertyControllerMeta;
 import ru.akvine.custodian.admin.controllers.rest.validators.PropertyValidator;
+import ru.akvine.custodian.core.services.dto.property.PropertyExport;
 import ru.akvine.custodian.core.services.PropertyService;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.*;
@@ -57,6 +56,13 @@ public class PropertyController implements PropertyControllerMeta {
         PropertyImport propertyImport = propertyConverter.convertToPropertyImport(file, appTitle, profile);
         propertyService.importProperties(propertyImport);
         return new SuccessfulResponse();
+    }
+
+    @Override
+    public ResponseEntity<?> exportProperties(@RequestBody @Valid PropertyExportRequest request) {
+        PropertyExport propertyExport = propertyConverter.convertToPropertyExport(request);
+        byte[] fileWithProperties = propertyService.exportProperties(propertyExport);
+        return propertyConverter.convertToResponseEntity(fileWithProperties, propertyExport.getFileType());
     }
 
     @Override

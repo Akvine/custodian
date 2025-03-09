@@ -3,7 +3,7 @@ package ru.akvine.custodian.core.validators.file;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import ru.akvine.custodian.core.enums.FileType;
+import ru.akvine.custodian.core.enums.ImportFileType;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class FilePropertiesValidator extends FileValidator {
     }
 
     @Override
-    public FileType getType() {
-        return FileType.PROPERTIES;
+    public ImportFileType getType() {
+        return ImportFileType.PROPERTIES;
     }
 }

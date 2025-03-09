@@ -1,21 +1,28 @@
 package ru.akvine.custodian.admin.controllers.rest.converters;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.custodian.admin.controllers.rest.dto.property.*;
 import ru.akvine.custodian.admin.controllers.rest.parsers.FilePropertiesParser;
 import ru.akvine.custodian.admin.controllers.rest.utils.SecurityHelper;
 import ru.akvine.custodian.admin.controllers.rest.utils.StringHelper;
+import ru.akvine.custodian.core.enums.ExportFileType;
 import ru.akvine.custodian.core.services.domain.PropertyBean;
 import ru.akvine.custodian.core.services.dto.property.*;
 import ru.akvine.custodian.core.utils.Asserts;
 
 import java.util.List;
 
+import static ru.akvine.custodian.core.enums.ExportFileType.XLSX;
+
 @Component
 @RequiredArgsConstructor
 public class PropertyConverter {
+    private static final String HEADER_PREFIX = "attachment; filename=";
+
     private final FilePropertiesParser filePropertiesParser;
     private final SecurityHelper securityHelper;
 
@@ -86,6 +93,33 @@ public class PropertyConverter {
                 .setProperties(filePropertiesParser.parse(file))
                 .setAppTitle(appTitle.trim().toLowerCase())
                 .setProfile(profile.trim().toLowerCase());
+    }
+
+    public PropertyExport convertToPropertyExport(PropertyExportRequest request) {
+        Asserts.isNotNull(request);
+        return new PropertyExport()
+                .setClientId(securityHelper.getCurrentUser().getId())
+                .setAppTitle(request.getAppTitle())
+                .setFileType(ExportFileType.safeFrom(request.getFileType()))
+                .setProfiles(request.getProfiles());
+    }
+
+    public ResponseEntity<?> convertToResponseEntity(byte[] file, ExportFileType fileType) {
+        Asserts.isNotNull(file, "fileWithProperties is null");
+        Asserts.isNotNull(fileType, "fileType is null");
+
+        String formattedName;
+        switch (fileType) {
+            case XLSX -> formattedName = HEADER_PREFIX + "response." + XLSX.getExtension();
+            default ->
+                    throw new UnsupportedOperationException("File with type = [" + fileType + "] is not supported by app!");
+        }
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, formattedName)
+                .header(HttpHeaders.CONTENT_TYPE, fileType.getMimeType())
+                .body(file);
     }
 
     private PropertyDto buildPropertyDto(PropertyBean propertyBean) {

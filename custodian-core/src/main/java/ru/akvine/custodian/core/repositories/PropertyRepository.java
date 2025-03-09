@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
@@ -27,6 +28,12 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
             "pe.deleted = false and pe.deletedDate is null and pea.deleted = false and pea.deletedDate is null")
     List<PropertyEntity> findByAppTitleAndProfiles(@Param("appTitle") String appTitle,
                                                    @Param("profiles") Collection<String> profiles);
+
+    @Query("from PropertyEntity pe join pe.app pea where pea.title = :appTitle and " +
+            "pe.profile = :profile and " +
+            "pe.deleted = false and pea.deleted = false")
+    List<PropertyEntity> findByAppTitleAndProfile(@Param("appTitle") String appTitle,
+                                                  @Param("profile") String profile);
 
     @Query("from PropertyEntity pe join pe.app pea where pea.title = :appTitle and " +
             "pe.profile = :profile and pe.key in :keys and " +
@@ -66,4 +73,8 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
             "APP_ENTITY.title = :title", nativeQuery = true)
     void delete(@Param("title") String appTitle,
                 @Param("deleteDate") ZonedDateTime deleteDate);
+
+    @Query("select distinct pe.profile from PropertyEntity pe join pe.app pea " +
+            "where pe.deleted = false and pea.deleted = false and pea.title = :appTitle")
+    Set<String> findUniqueProfiles(@Param("appTitle") String appTitle);
 }

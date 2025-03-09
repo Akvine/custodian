@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.akvine.custodian.core.enums.ExportFileType;
 import ru.akvine.custodian.core.exceptions.property.PropertyAlreadyExistsException;
 import ru.akvine.custodian.core.exceptions.property.PropertyNotFoundException;
 import ru.akvine.custodian.core.exceptions.property.PropertyUpdateException;
+import ru.akvine.custodian.core.managers.ExportersManagers;
 import ru.akvine.custodian.core.repositories.PropertyRepository;
 import ru.akvine.custodian.core.repositories.entities.AppEntity;
 import ru.akvine.custodian.core.repositories.entities.PropertyEntity;
@@ -23,7 +25,9 @@ import java.util.*;
 @Slf4j
 public class PropertyService {
     private final PropertyRepository propertyRepository;
+
     private final AppService appService;
+    private final ExportersManagers exportersManagers;
 
     public PropertyBean create(PropertyCreate propertyCreate) {
         Asserts.isNotNull(propertyCreate, "propertyCreate is null");
@@ -180,6 +184,32 @@ public class PropertyService {
 
         logger.debug("Successful import all properties");
         return true;
+    }
+
+    public byte[] exportProperties(PropertyExport propertyExport) {
+        Asserts.isNotNull(propertyExport);
+
+        String appTitle = propertyExport.getAppTitle();
+        ExportFileType fileType = propertyExport.getFileType();
+
+        Set<String> uniqueProfiles;
+        if (CollectionUtils.isEmpty(propertyExport.getProfiles())) {
+            uniqueProfiles = propertyRepository.findUniqueProfiles(propertyExport.getAppTitle());
+        } else {
+            uniqueProfiles = propertyExport.getProfiles();
+        }
+
+        Map<String, List<PropertyBean>> profilesWithProperties = new HashMap<>();
+        for (String profile : uniqueProfiles) {
+            List<PropertyBean> properties = propertyRepository
+                    .findByAppTitleAndProfile(appTitle, profile)
+                    .stream()
+                    .map(PropertyBean::new)
+                    .toList();
+            profilesWithProperties.put(profile, properties);
+        }
+
+        return exportersManagers.getByType(fileType).export(profilesWithProperties);
     }
 
     public void delete(PropertyDelete propertyDelete) {
