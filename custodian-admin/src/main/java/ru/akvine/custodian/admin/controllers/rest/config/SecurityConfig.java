@@ -34,6 +34,11 @@ public class SecurityConfig {
                         .requestMatchers("/access/restore/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
