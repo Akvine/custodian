@@ -4,8 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import ru.akvine.custodian.core.services.domain.AccessTokenModel;
 import ru.akvine.custodian.core.services.domain.PropertyModel;
+import ru.akvine.custodian.core.services.dto.property.PropertyDelete;
 import ru.akvine.custodian.core.services.dto.property.PropertyList;
 import ru.akvine.custodian.core.utils.Asserts;
+import ru.akvine.custodian.integration.rest.dto.ApiPropertyDeleteRequest;
 import ru.akvine.custodian.integration.rest.dto.ApiPropertyDto;
 import ru.akvine.custodian.integration.rest.dto.ApiPropertyListRequest;
 import ru.akvine.custodian.integration.rest.dto.ApiPropertyListResponse;
@@ -27,6 +29,15 @@ public class ApiPropertyConverter {
         return new ApiPropertyListResponse()
                 .setCount(properties.size())
                 .setProperties(properties.stream().map(this::buildPropertyDto).toList());
+    }
+
+    public PropertyDelete convertToPropertyDelete(ApiPropertyDeleteRequest request, AccessTokenModel accessToken) {
+        Asserts.isNotNull(request);
+        Asserts.isNotNull(accessToken);
+        return new PropertyDelete()
+                .setAppTitle(request.getAppTitle())
+                .setProfilesWithKeys(request.getProfilesWithKeys())
+                .setClientId(accessToken.getApp().getClient().getId());
     }
 
     private ApiPropertyDto buildPropertyDto(PropertyModel propertyBean) {
